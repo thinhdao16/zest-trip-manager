@@ -1,0 +1,31 @@
+/* scrollbar */
+@import 'simplebar-react/dist/simplebar.min.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* global-scrollbar.css */
+/* Thanh cuộn toàn cầu */
+.global-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.global-scrollbar::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #f5f4f7;
+}
+
+.global-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.global-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.global-scrollbar::-webkit-scrollbar-thumb:active {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/*end*/
