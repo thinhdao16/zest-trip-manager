@@ -18,13 +18,13 @@ const navConfig = [
     icon: icon('ic_user'),
   },
   {
-    title: 'acc provider',
-    path: '/acc-provider',
-    icon: icon('ic_user'),
-  },
-  {
     title: 'product',
     path: '/products',
+    icon: icon('ic_cart'),
+  },
+  {
+    title: 'report',
+    path: '/report',
     icon: icon('ic_cart'),
   },
   {
@@ -50,9 +50,9 @@ export const navConfigStaff = [
     icon: icon('ic_blog'),
   },
   {
-    title: 'acc provider',
-    path: '/acc-provider',
-    icon: icon('ic_user'),
+    title: 'report',
+    path: '/report',
+    icon: icon('ic_cart'),
   },
   {
     title: 'Not found',
@@ -60,5 +60,22 @@ export const navConfigStaff = [
     icon: icon('ic_disabled'),
   },
 ];
+export const navConfigManagerProvider = [
+  {
+    title: 'List',
+    path: '/list-provider',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'Approval',
+    path: '/acc-provider',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'Report',
+    path: '/report-provider',
+    icon: icon('ic_user'),
+  },
 
+];
 export default navConfig;

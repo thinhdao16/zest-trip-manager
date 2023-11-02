@@ -23,7 +23,7 @@ const style = {
 
 };
 // eslint-disable-next-line react/prop-types
-export default function ModalAccProvider({ openModal, setOpenModal, idProvider }) {
+export default function ModalListProvider({ openModal, setOpenModal, idProvider }) {
 
     const { setLoadingAccProvider } = React.useContext(DataContext)
 

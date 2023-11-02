@@ -1,7 +1,11 @@
+
+/* eslint-disable no-undef */
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { AiOutlineUp, AiOutlineDown, AiTwotoneSwitcher } from 'react-icons/ai';
 
 import Box from '@mui/material/Box';
+import { Fade } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
 import Avatar from '@mui/material/Avatar';
@@ -20,7 +24,7 @@ import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
-import navConfig, { navConfigStaff } from './config-navigation';
+import navConfig, { navConfigStaff, navConfigManagerProvider } from './config-navigation';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +35,25 @@ export default function Nav({ openNav, onCloseNav }) {
   const role = localStorage.getItem("role")
 
   const [dataNav, setDataNav] = useState([])
+  const [expanded, setExpanded] = useState({});
+  const toggleContentVisibility = (field) => {
+    setExpanded((prevExpanded) => {
+      const newExpanded = { ...prevExpanded };
+
+      if (newExpanded[field]) {
+        newExpanded[field] = false;
+      } else {
+        newExpanded[field] = true;
+        Object.keys(newExpanded).forEach((key) => {
+          if (key !== field) {
+            newExpanded[key] = false;
+          }
+        });
+      }
+      return newExpanded;
+    });
+  };
+
   useEffect(() => {
     if (openNav) {
       onCloseNav();
@@ -66,17 +89,87 @@ export default function Nav({ openNav, onCloseNav }) {
         <Typography variant="subtitle2">{account.displayName}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
+          {role}
         </Typography>
       </Box>
     </Box>
   );
+  const pathManagement = navConfigManagerProvider?.some((item) => pathname === item.path);
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
       {dataNav.map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
+      <ListItemButton
+        component={RouterLink}
+        sx={{
+          position: "relative",
+          minHeight: 44,
+          borderRadius: 0.75,
+          typography: 'body2',
+          color: 'text.secondary',
+          textTransform: 'capitalize',
+          fontWeight: 'fontWeightMedium',
+          ...(pathManagement && {
+            color: 'primary.main',
+            fontWeight: 'fontWeightSemiBold',
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+            '&:hover': {
+              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
+            },
+          }),
+        }}
+        onClick={() => toggleContentVisibility("provider")}
+      >
+        <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
+          <AiTwotoneSwitcher className='w-6 h-6' />
+        </Box>
+        <Box component="span">Management Provider </Box>
+        {!expanded?.provider ? (
+          <AiOutlineDown className='absolute right-4' />
+        ) : (
+          <AiOutlineUp className='absolute right-4' />
+        )}
+      </ListItemButton>
+      {navConfigManagerProvider?.map((item, index) => {
+        const activeProvider = pathname === item?.path;
+        return (
+          <React.Fragment key={index}>
+
+
+            {expanded?.provider && (
+              <Fade in={expanded} timeout={700}>
+                <ListItemButton
+                  component={RouterLink}
+                  href={item?.path}
+                  sx={{
+                    position: "relative",
+                    minHeight: 44,
+                    borderRadius: 0.75,
+                    paddingLeft: 7,
+                    typography: 'body2',
+                    color: 'text.secondary',
+                    textTransform: 'capitalize',
+                    fontWeight: 'fontWeightMedium',
+                    ...(activeProvider && {
+                      color: 'primary.main',
+                      fontWeight: 'fontWeightSemiBold',
+                      '&:hover': {
+                        bgcolor: (theme) => alpha(theme.palette.grey[300]),
+                      },
+                    }),
+                  }}
+                >
+                  <span>{item?.title}</span>
+                </ListItemButton>
+              </Fade>
+            )}
+          </React.Fragment>
+        )
+      })}
+
+
     </Stack>
   );
 
@@ -148,9 +241,7 @@ Nav.propTypes = {
 
 function NavItem({ item }) {
   const pathname = usePathname();
-
   const active = item.path === pathname;
-
   return (
     <ListItemButton
       component={RouterLink}

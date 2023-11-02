@@ -28,7 +28,7 @@ import { emptyRows, applyFilter, getComparator } from './utils';
 
 // ----------------------------------------------------------------------
 
-export default function AccProvider() {
+export default function ListProvider() {
 
     const { loadingAccProvider } = useContext(DataContext)
 
@@ -111,7 +111,7 @@ export default function AccProvider() {
     useEffect(() => {
         const queryParams = {
             // orderBy: 'email:asc',
-            status: 'PROCESSING',
+            // status: 'ACTIVE',
             // select: 2,
             // page: 1,
             // query: 'example@example.com',
@@ -154,6 +154,7 @@ export default function AccProvider() {
                     numSelected={selected.length}
                     filterName={filterName}
                     onFilterName={handleFilterByName}
+                    updateData={setData}
                 />
 
                 <Scrollbar>

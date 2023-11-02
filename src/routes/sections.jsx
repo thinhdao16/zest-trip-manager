@@ -12,6 +12,7 @@ const LazyProductsPage = lazy(() => import('src/pages/products'));
 const LazyBlogPage = lazy(() => import('src/pages/blog'));
 const LazyPage404 = lazy(() => import('src/pages/page-not-found'));
 const LazyAccProvider = lazy(() => import('src/pages/provider/accprovider/acc-provider'))
+const LazyListProvider = lazy(() => import('src/pages/provider/listprovider/list-provider'))
 const isAuthenticated = () => {
   const token = localStorage.getItem('access_token');
   return !!token; // Return true if a token exists, false otherwise
@@ -44,6 +45,7 @@ export default function Router() {
         { path: 'products', element: <LazyProductsPage /> },
         { path: 'blog', element: <LazyBlogPage /> },
         { path: 'acc-provider', element: <ProtectedRoute element={<LazyAccProvider />} /> },
+        { path: 'list-provider', element: <ProtectedRoute element={<LazyListProvider />} /> },
 
         {
           // Handle empty path or unknown paths
