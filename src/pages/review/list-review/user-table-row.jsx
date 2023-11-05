@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { FiLoader } from 'react-icons/fi';
+import { AiFillCheckCircle } from 'react-icons/ai';
 
+import { Rating } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
@@ -14,8 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
-import ModalAccProvider from '../modal/modal-acc-provider';
-
+import ModalListReview from '../modal/modal-list-review';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
@@ -29,6 +31,7 @@ export default function UserTableRow({
   handleClick,
   idProvider,
 }) {
+  console.log(isVerified)
   const [open, setOpen] = useState(null);
   const [openModal, setOpenModal] = useState(false)
   const handleOpenMenu = (event) => {
@@ -41,16 +44,6 @@ export default function UserTableRow({
   const handleGetInfoProvider = (e) => {
     setOpenModal(true)
   }
-  const statusColors = {
-    BANNED: 'warning',
-    REJECT: 'error',
-    DISABLE: 'secondary',
-    PROCESSING: 'info',
-    ACCEPTED: 'success'
-  };
-
-  <Label color={statusColors[status] || 'error'}>{status}</Label>
-
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected} onClick={() => handleGetInfoProvider(idProvider)}>
@@ -69,12 +62,20 @@ export default function UserTableRow({
 
         <TableCell>{company}</TableCell>
 
-        <TableCell>{role}</TableCell>
+        <TableCell>
+          <Rating name="read-only" value={role} readOnly />
+        </TableCell>
 
-        <TableCell align="center">{isVerified}</TableCell>
+        <TableCell className='justify-center items-center' style={{ display: "flex" }}>
+          {isVerified === null ? (
+            <AiFillCheckCircle className='text-green-500' />
+          ) : (
+            <FiLoader className='text-yellow-500' />
+          )}
+        </TableCell>
 
         <TableCell>
-          <Label color={statusColors[status] || 'error'}>{status}</Label>
+          <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
         </TableCell>
 
         <TableCell align="right">
@@ -84,7 +85,7 @@ export default function UserTableRow({
         </TableCell>
       </TableRow>
       {/* modal */}
-      <ModalAccProvider openModal={openModal} setOpenModal={setOpenModal} idProvider={idProvider} />
+      <ModalListReview openModal={openModal} setOpenModal={setOpenModal} idProvider={idProvider} />
       {/* end */}
       <Popover
         open={!!open}

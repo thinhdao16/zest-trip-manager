@@ -16,22 +16,28 @@ const navConfig = [
     title: 'user',
     path: '/user',
     icon: icon('ic_user'),
+
   },
   {
-    title: 'product',
-    path: '/products',
-    icon: icon('ic_cart'),
+    title: 'review',
+    path: '/list-review',
+    icon: icon('ic_user'),
   },
-  {
-    title: 'report',
-    path: '/report',
-    icon: icon('ic_cart'),
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
-  },
+  // {
+  //   title: 'product',
+  //   path: '/products',
+  //   icon: icon('ic_cart'),
+  // },
+  // {
+  //   title: 'report',
+  //   path: '/report',
+  //   icon: icon('ic_cart'),
+  // },
+  // {
+  //   title: 'Not found',
+  //   path: '/404',
+  //   icon: icon('ic_disabled'),
+  // },
 ];
 export const navConfigStaff = [
   {
@@ -40,25 +46,30 @@ export const navConfigStaff = [
     icon: icon('ic_analytics'),
   },
   {
-    title: 'product',
-    path: '/products',
-    icon: icon('ic_cart'),
+    title: 'review',
+    path: '/list-review',
+    icon: icon('ic_user'),
   },
-  {
-    title: 'blog',
-    path: '/blog',
-    icon: icon('ic_blog'),
-  },
-  {
-    title: 'report',
-    path: '/report',
-    icon: icon('ic_cart'),
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
-  },
+  // {
+  //   title: 'product',
+  //   path: '/products',
+  //   icon: icon('ic_cart'),
+  // },
+  // {
+  //   title: 'blog',
+  //   path: '/blog',
+  //   icon: icon('ic_blog'),
+  // },
+  // {
+  //   title: 'report',
+  //   path: '/report',
+  //   icon: icon('ic_cart'),
+  // },
+  // {
+  //   title: 'Not found',
+  //   path: '/404',
+  //   icon: icon('ic_disabled'),
+  // },
 ];
 export const navConfigManagerProvider = [
   {

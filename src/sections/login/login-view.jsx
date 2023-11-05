@@ -72,6 +72,7 @@ export default function LoginView() {
       if (decodedTokenRole.role_id === 4) {
         localStorage.setItem("role", "Staff");
       }
+      localStorage.setItem("email_role", decodedTokenRole.email)
       router.push("/");
       setOpenLoading(false);
     } catch (error) {

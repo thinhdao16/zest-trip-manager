@@ -42,23 +42,24 @@ export default function UserTableRow({
     setOpenModal(true)
   }
   const statusColors = {
-    BANNED: 'warning',
+    PENDING: 'warning',
     REJECT: 'error',
-    DISABLE: 'secondary',
-    PROCESSING: 'info',
     ACCEPTED: 'success'
   };
-
-  <Label color={statusColors[status] || 'error'}>{status}</Label>
-
+  const typeColors = {
+    UNDERPROMISE: "warning",
+    SCAMMER: "error",
+    MISCHIEF: "primary",
+    OTHERS: "infor",
+  }
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected} onClick={() => handleGetInfoProvider(idProvider)}>
+      <TableRow hover tabIndex={-1} role="checkbox" selected={selected} >
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={handleClick} />
         </TableCell>
 
-        <TableCell component="th" scope="row" padding="none">
+        <TableCell component="th" scope="row" padding="none" onClick={() => handleGetInfoProvider(idProvider)}>
           <Stack direction="row" alignItems="center" spacing={2}>
             <Avatar alt={name} src={avatarUrl} />
             <Typography variant="subtitle2" noWrap>
@@ -67,14 +68,14 @@ export default function UserTableRow({
           </Stack>
         </TableCell>
 
-        <TableCell>{company}</TableCell>
+        <TableCell onClick={() => handleGetInfoProvider(idProvider)}>{company}</TableCell>
 
-        <TableCell>{role}</TableCell>
+        <TableCell onClick={() => handleGetInfoProvider(idProvider)}>{role}</TableCell>
 
-        <TableCell align="center">{isVerified}</TableCell>
-
-        <TableCell>
-          <Label color={statusColors[status] || 'error'}>{status}</Label>
+        <TableCell align="center" onClick={() => handleGetInfoProvider(idProvider)}>
+          <Label color={statusColors[isVerified] || 'error'}>{isVerified}</Label></TableCell>
+        <TableCell onClick={() => handleGetInfoProvider(idProvider)}>
+          <Label color={typeColors[status] || 'error'}>{status}</Label>
         </TableCell>
 
         <TableCell align="right">

@@ -1,7 +1,7 @@
 
 /* eslint-disable no-undef */
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { AiOutlineUp, AiOutlineDown, AiTwotoneSwitcher } from 'react-icons/ai';
 
 import Box from '@mui/material/Box';
@@ -33,7 +33,18 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const upLg = useResponsive('up', 'lg');
   const role = localStorage.getItem("role")
+  const email = localStorage.getItem('email_role')
+  const name = useMemo(() => {
+    if (email) {
+      const atIndex = email.indexOf('@');
 
+      if (atIndex !== -1) {
+        const username = email.slice(0, atIndex);
+        return username;
+      }
+    }
+    return '';
+  }, [email]);
   const [dataNav, setDataNav] = useState([])
   const [expanded, setExpanded] = useState({});
   const toggleContentVisibility = (field) => {
@@ -69,7 +80,7 @@ export default function Nav({ openNav, onCloseNav }) {
     if (role === "Staff") {
       setDataNav(navConfigStaff)
     }
-  }, [onCloseNav, openNav, pathname, role])
+  }, [onCloseNav, openNav, pathname, role, email])
   const renderAccount = (
     <Box
       sx={{
@@ -86,7 +97,7 @@ export default function Nav({ openNav, onCloseNav }) {
       <Avatar src={account.photoURL} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{name}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {role}
@@ -125,7 +136,7 @@ export default function Nav({ openNav, onCloseNav }) {
         <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
           <AiTwotoneSwitcher className='w-6 h-6' />
         </Box>
-        <Box component="span">Management Provider </Box>
+        <Box component="span">Provider Management</Box>
         {!expanded?.provider ? (
           <AiOutlineDown className='absolute right-4' />
         ) : (

@@ -13,6 +13,9 @@ const LazyBlogPage = lazy(() => import('src/pages/blog'));
 const LazyPage404 = lazy(() => import('src/pages/page-not-found'));
 const LazyAccProvider = lazy(() => import('src/pages/provider/accprovider/acc-provider'))
 const LazyListProvider = lazy(() => import('src/pages/provider/listprovider/list-provider'))
+const LazyReportProvider = lazy(() => import('src/pages/provider/reportprovider/report-provider'))
+const LazyListReview = lazy(() => import('src/pages/review/list-review/ListReview'))
+
 const isAuthenticated = () => {
   const token = localStorage.getItem('access_token');
   return !!token; // Return true if a token exists, false otherwise
@@ -46,6 +49,8 @@ export default function Router() {
         { path: 'blog', element: <LazyBlogPage /> },
         { path: 'acc-provider', element: <ProtectedRoute element={<LazyAccProvider />} /> },
         { path: 'list-provider', element: <ProtectedRoute element={<LazyListProvider />} /> },
+        { path: 'report-provider', element: <ProtectedRoute element={<LazyReportProvider />} /> },
+        { path: 'list-review', element: <ProtectedRoute element={<LazyListReview />} /> },
 
         {
           // Handle empty path or unknown paths

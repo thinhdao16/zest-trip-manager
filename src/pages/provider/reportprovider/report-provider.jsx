@@ -28,7 +28,7 @@ import { emptyRows, applyFilter, getComparator } from './utils';
 
 // ----------------------------------------------------------------------
 
-export default function AccProvider() {
+export default function ReportPrrovider() {
 
     const { loadingAccProvider } = useContext(DataContext)
 
@@ -45,6 +45,7 @@ export default function AccProvider() {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const [data, setData] = useState({ providers: [] });
+    console.log(data)
     const [loading, setLoading] = useState(false)
 
 
@@ -110,14 +111,14 @@ export default function AccProvider() {
     useEffect(() => {
         const queryParams = {
             // orderBy: 'email:asc',
-            status: 'PROCESSING',
+            // status: 'ACTIVE',
             // select: 2,
             // page: 1,
             // query: 'example@example.com',
         };
 
         axiosInstance
-            .get(`${BASE_URL}/staff/provider-management/providers`, {
+            .get(`${BASE_URL}/report`, {
                 params: queryParams,
             })
             .then((response) => {
@@ -153,6 +154,7 @@ export default function AccProvider() {
                     numSelected={selected.length}
                     filterName={filterName}
                     onFilterName={handleFilterByName}
+                    updateData={setData}
                 />
 
                 <Scrollbar>
@@ -167,9 +169,9 @@ export default function AccProvider() {
                                 onSelectAllClick={handleSelectAllClick}
                                 headLabel={[
                                     { id: 'name', label: 'Email' },
-                                    { id: 'company', label: 'Company' },
+                                    { id: 'company', label: 'Description' },
                                     { id: 'role', label: 'Phone' },
-                                    { id: 'isVerified', label: 'Service type', align: 'center' },
+                                    { id: 'isVerified', label: 'Report type', align: 'center' },
                                     { id: 'status', label: 'Status' },
                                     { id: '' },
                                 ]}
@@ -180,12 +182,12 @@ export default function AccProvider() {
                                     ?.map((row) => (
                                         <UserTableRow
                                             key={row.id}
-                                            name={row.email}
+                                            name={row?.reporter?.email}
                                             role={row.phone}
                                             status={row.status}
-                                            company={row.company_name}
+                                            company={row?.description}
                                             avatarUrl={row.avatar_image_url}
-                                            isVerified={row.service_type}
+                                            isVerified={row?.report_type}
                                             selected={selected.indexOf(row.name) !== -1}
                                             handleClick={(event) => handleClick(event, row.name)}
                                             idProvider={row.id}
