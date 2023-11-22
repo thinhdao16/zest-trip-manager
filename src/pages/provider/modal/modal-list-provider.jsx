@@ -1,11 +1,12 @@
 import * as React from 'react';
-import FileDownload from 'react-file-download';
+import { Link } from 'react-router-dom';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
 import Backdrop from '@mui/material/Backdrop';
+import { CircularProgress } from '@mui/material';
 
 import { DataContext } from 'src/store/datacontext/DataContext';
 // eslint-disable-next-line import/no-named-as-default
@@ -20,7 +21,7 @@ const style = {
     bgcolor: 'background.paper',
     boxShadow: 210,
     borderRadius: 2,
-
+    zIndex: 2
 };
 // eslint-disable-next-line react/prop-types
 export default function ModalListProvider({ openModal, setOpenModal, idProvider }) {
@@ -32,47 +33,54 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
         console.log(field)
         axiosInstance
             .put(`${BASE_URL}/staff/provider-management/providers/${idProvider}`, {
-                status: field
+                status: field,
+                reason: "abc"
             })
             .then((response) => {
                 console.log(response)
                 setDataProvider(response.data.data);
-                // setLoading(false);
+                setLoading(false);
                 setOpenModal(false)
                 setLoadingAccProvider((prev) => !prev)
             })
             .catch((error) => {
                 console.error('Error:', error);
-                // setLoading(false);
+                setLoading(false);
             });
     };
 
     const [dataProvider, setDataProvider] = React.useState()
-    // const [loading, setLoading] = React.useState(false)
+    const role = React.useMemo(() => {
+        const roleId = localStorage.getItem("role")
+        return roleId
+    }, [])
+    console.log(role)
+    console.log(dataProvider)
+    const [loading, setLoading] = React.useState(false)
     React.useEffect(() => {
-        // setLoading(true);
+        setLoading(true);
         axiosInstance
             .get(`${BASE_URL}/staff/provider-management/providers/${idProvider}`, {
             })
             .then((response) => {
                 setDataProvider(response.data.data);
-                // setLoading(false);
+                setLoading(false);
             })
             .catch((error) => {
                 console.error('Error:', error);
-                // setLoading(false);
+                setLoading(false);
             });
     }, [idProvider]);
     return (
         <div>
-            {/* <Backdrop
+            <Backdrop
                 // eslint-disable-next-line no-shadow
-                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 99999 }}
                 open={loading}
                 onClick={() => setLoading(false)}
             >
                 <CircularProgress color="inherit" />
-            </Backdrop> */}
+            </Backdrop>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -86,6 +94,7 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                 }}
             >
                 <Fade in={openModal}>
+
                     <Box sx={style}>
                         <div className="relative">
                             <div
@@ -93,7 +102,7 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                 style={{ marginTop: "-1px" }}
                             >
                                 <div className="flex items-center justify-center">
-                                    <span className=" text-2xl font-bold">Company Information</span>
+                                    <span className=" text-2xl font-bold">Company Informations</span>
                                 </div>
                             </div>
                             <div
@@ -217,20 +226,25 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                                     <img src={dataProvider?.avatar_image_url || "https://i.pinimg.com/736x/fa/60/51/fa6051d72b821cb48a8cc71d3481dfef.jpg"} className=' rounded-full object-cover w-20 h-20' alt="wait" />
                                                 </div>
                                                 <div className="absolute top-32 right-10 flex gap-3">
-                                                    <a
-                                                        className='text-blue-500'
-                                                        href={dataProvider?.avatar_image_url}
-                                                    // onClick={() => FileDownload(dataProvider?.avatar_image_url, `${dataProvider?.avatar_image_url}`)}
+
+                                                    <Link
+                                                        to={dataProvider?.avatar_image_url}
+                                                        className="text-blue-500"
+                                                        target="_blank"
                                                     >
                                                         View avatar
-                                                    </a>
-                                                    <a
-                                                        className='text-blue-900'
-                                                        href="#"
-                                                        onClick={() => FileDownload(dataProvider?.banner_image_url, `${dataProvider?.banner_image_url}`)}
+
+                                                    </Link>
+
+                                                    <Link
+                                                        to={dataProvider?.avatar_image_url}
+                                                        className="text-blue-900"
+                                                        target="_blank"
                                                     >
                                                         View banner
-                                                    </a>
+
+
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -241,21 +255,42 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                 className="flex gap-5 absolute bottom-0 bg-white w-full justify-center p-4 rounded-b-xl border border-solid border-gray-200"
                                 style={{ marginBottom: "-1px    " }}
                             >
-                                <button
-                                    className="px-6 py-2 bg-gray-300 rounded-lg text-gray-600 font-medium"
-                                    type='button'
-                                    onClick={() => handleCloseUpdate("REJECT")}
-                                >
-                                    Reject
-                                </button>
-                                <button
-                                    className="px-6 py-2 bg-blue-600 rounded-lg text-white font-medium"
-                                    type='button'
+                                {dataProvider?.status !== 'REJECT' && (
+                                    <button
+                                        className="px-6 py-2 bg-gray-300 rounded-lg text-gray-600 font-medium"
+                                        type='button'
+                                        onClick={() => handleCloseUpdate("REJECT")}
+                                    >
+                                        Reject
+                                    </button>
+                                )}
+                                {dataProvider?.status !== 'ACCEPTED' && (
+                                    <button
+                                        className="px-6 py-2 bg-blue-600 rounded-lg text-white font-medium"
+                                        type='button'
 
-                                    onClick={() => handleCloseUpdate("ACCEPTED")}
-                                >
-                                    Accepted
-                                </button>
+                                        onClick={() => handleCloseUpdate("ACCEPTED")}
+                                    >
+                                        Accepted
+                                    </button>)}
+                                {dataProvider?.status !== 'BANNED' && (
+                                    <button
+                                        className="px-6 py-2 bg-yellow-300 rounded-lg text-yellow-900 font-medium"
+                                        type='button'
+                                        onClick={() => handleCloseUpdate("BANNED")}
+                                    >
+                                        Banned
+                                    </button>)}
+                                {dataProvider?.status !== 'DISABLED' && role !== "Staff" && (
+                                    <button
+                                        className="px-6 py-2 bg-red-300 rounded-lg text-red-900 font-medium"
+                                        type='button'
+
+                                        onClick={() => handleCloseUpdate("DISABLED")}
+                                    >
+                                        Disable
+                                    </button>
+                                )}
                             </div>
                         </div>
 

@@ -1,6 +1,7 @@
 /* eslint-disable import/no-named-as-default */
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState, useContext } from 'react';
+import { CiCircleCheck } from "react-icons/ci";
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -12,11 +13,11 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { DataContext } from 'src/store/datacontext/DataContext';
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
 
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
@@ -31,8 +32,7 @@ export default function UserTableRow({
   data,
 }) {
   const [open, setOpen] = useState(null);
-  
-  // console.log(data)
+  const { setLoadingAccProvider } = useContext(DataContext)
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -42,16 +42,24 @@ export default function UserTableRow({
   };
   const handleEditUser = (dataMenu) => {
     console.log(dataMenu)
-    axiosInstance.put(`${BASE_URL}/admin/user/${dataMenu.id}`, {
-      status: "BANNED"
+    axiosInstance.put(`${BASE_URL}/admin/user/${dataMenu.data.id}`, {
+      status: dataMenu.status
     })
       .then((response) => {
         console.log(response)
+        setLoadingAccProvider((prev) => !prev)
       })
       .catch((error) => {
         console.log(error)
       })
   }
+  const statusMapping = {
+    1: { role_name: "Customer", color: "success" },
+    2: { role_name: "Admin", color: "success" },
+    3: { role_name: "Provider", color: "success" },
+    4: { role_name: "Staff", color: "success" },
+  };
+  const currentStatus = statusMapping[phone_number];
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
@@ -70,7 +78,9 @@ export default function UserTableRow({
 
         <TableCell>{email}</TableCell>
 
-        <TableCell>{phone_number || "unknow"}</TableCell>
+        <TableCell>
+          {currentStatus && currentStatus.role_name}
+        </TableCell>
 
         <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
 
@@ -78,11 +88,18 @@ export default function UserTableRow({
           <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
         </TableCell>
 
-        <TableCell align="right">
-          <IconButton onClick={(e) => handleOpenMenu(e, data)}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
-        </TableCell>
+        <TableRow>
+          <TableCell align="right">
+            {/* Render IconButton only if status is not 4 */}
+            {phone_number !== 2 && (
+              <IconButton onClick={(e) => handleOpenMenu(e, data)}>
+                <Iconify icon="eva:more-vertical-fill" />
+              </IconButton>
+            )}
+          </TableCell>
+          {/* Other TableCell components */}
+        </TableRow>
+
       </TableRow>
 
       <Popover
@@ -95,15 +112,27 @@ export default function UserTableRow({
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={() => handleEditUser(data)}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
+        {status !== 'SUSPENDED' && (
+          <MenuItem onClick={() => handleEditUser({ data, status: "SUSPENDED" })}>
+            <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
+            Suspended
+          </MenuItem>
+        )}
+        {status !== 'BANNED' && (
+          <MenuItem onClick={() => handleEditUser({ data, status: "BANNED" })} sx={{ color: 'error.main' }}>
+            <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
+            Banned
+          </MenuItem>
+        )}
 
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
-          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
+        {status !== 'ACTIVE' && (
+          <MenuItem onClick={() => handleEditUser({ data, status: "ACTIVE" })} sx={{ color: 'success.main' }}>
+            <Iconify icon="eva:check-2-outline" sx={{ mr: 2 }} />
+            <CiCircleCheck className='mr-5 ml-1' />
+            Active
+          </MenuItem>
+        )}
+
       </Popover>
     </>
   );

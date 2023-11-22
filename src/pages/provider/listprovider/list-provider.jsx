@@ -45,7 +45,7 @@ export default function ListProvider() {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const [data, setData] = useState({ providers: [] });
-
+    console.log(data)
     const [loading, setLoading] = useState(false)
 
 

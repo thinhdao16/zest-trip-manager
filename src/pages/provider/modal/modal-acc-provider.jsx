@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
 import Backdrop from '@mui/material/Backdrop';
+import { CircularProgress } from '@mui/material';
 
 import { DataContext } from 'src/store/datacontext/DataContext';
 // eslint-disable-next-line import/no-named-as-default
@@ -29,7 +30,7 @@ export default function ModalAccProvider({ openModal, setOpenModal, idProvider }
 
     const handleCloseCancel = () => setOpenModal(false);
     const handleCloseUpdate = (field) => {
-        console.log(field)
+        setLoading(true);
         axiosInstance
             .put(`${BASE_URL}/staff/provider-management/providers/${idProvider}`, {
                 status: field
@@ -37,42 +38,42 @@ export default function ModalAccProvider({ openModal, setOpenModal, idProvider }
             .then((response) => {
                 console.log(response)
                 setDataProvider(response.data.data);
-                // setLoading(false);
+                setLoading(false);
                 setOpenModal(false)
                 setLoadingAccProvider((prev) => !prev)
             })
             .catch((error) => {
                 console.error('Error:', error);
-                // setLoading(false);
+                setLoading(false);
             });
     };
 
     const [dataProvider, setDataProvider] = React.useState()
-    // const [loading, setLoading] = React.useState(false)
+    const [loading, setLoading] = React.useState(false)
     React.useEffect(() => {
-        // setLoading(true);
+        setLoading(true);
         axiosInstance
             .get(`${BASE_URL}/staff/provider-management/providers/${idProvider}`, {
             })
             .then((response) => {
                 setDataProvider(response.data.data);
-                // setLoading(false);
+                setLoading(false);
             })
             .catch((error) => {
                 console.error('Error:', error);
-                // setLoading(false);
+                setLoading(false);
             });
     }, [idProvider]);
     return (
         <div>
-            {/* <Backdrop
+            <Backdrop
                 // eslint-disable-next-line no-shadow
-                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 99999999 }}
                 open={loading}
                 onClick={() => setLoading(false)}
             >
                 <CircularProgress color="inherit" />
-            </Backdrop> */}
+            </Backdrop>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"

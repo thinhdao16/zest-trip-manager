@@ -14,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
-import ModalAccProvider from '../modal/modal-acc-provider';
+import ModalListProvider from '../modal/modal-list-provider';
 
 // ----------------------------------------------------------------------
 
@@ -84,7 +84,7 @@ export default function UserTableRow({
         </TableCell>
       </TableRow>
       {/* modal */}
-      <ModalAccProvider openModal={openModal} setOpenModal={setOpenModal} idProvider={idProvider} />
+      <ModalListProvider openModal={openModal} setOpenModal={setOpenModal} idProvider={idProvider} />
       {/* end */}
       <Popover
         open={!!open}

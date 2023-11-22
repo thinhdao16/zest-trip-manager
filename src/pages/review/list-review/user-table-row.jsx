@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FiLoader } from 'react-icons/fi';
+import { useState, useContext } from 'react';
 import { AiFillCheckCircle } from 'react-icons/ai';
 
 import { Rating } from '@mui/material';
@@ -14,10 +14,13 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { DataContext } from 'src/store/datacontext/DataContext';
+// eslint-disable-next-line import/no-named-as-default
+import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
+
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
-import ModalListReview from '../modal/modal-list-review';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
@@ -31,9 +34,9 @@ export default function UserTableRow({
   handleClick,
   idProvider,
 }) {
-  console.log(isVerified)
+  console.log(idProvider)
   const [open, setOpen] = useState(null);
-  const [openModal, setOpenModal] = useState(false)
+  const { setLoadingAccProvider } = useContext(DataContext)
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -41,12 +44,24 @@ export default function UserTableRow({
   const handleCloseMenu = () => {
     setOpen(null);
   };
-  const handleGetInfoProvider = (e) => {
-    setOpenModal(true)
+  const handleEditUser = (dataMenu) => {
+    console.log(dataMenu)
+    axiosInstance.put(`${BASE_URL}/staff/review/${idProvider}`, {
+
+      status: dataMenu.status
+    })
+      .then((response) => {
+        console.log(response)
+        setLoadingAccProvider((prev) => !prev)
+        setOpen(false)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected} onClick={() => handleGetInfoProvider(idProvider)}>
+      <TableRow hover tabIndex={-1} role="checkbox" selected={selected} >
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={handleClick} />
         </TableCell>
@@ -66,16 +81,18 @@ export default function UserTableRow({
           <Rating name="read-only" value={role} readOnly />
         </TableCell>
 
-        <TableCell className='justify-center items-center' style={{ display: "flex" }}>
+        <TableCell className='' >
           {isVerified === null ? (
-            <AiFillCheckCircle className='text-green-500' />
+            <FiLoader className='text-yellow-500 ml-8' />
+
           ) : (
-            <FiLoader className='text-yellow-500' />
+            <AiFillCheckCircle className='text-green-500 ml-8' />
+
           )}
         </TableCell>
 
         <TableCell>
-          <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
+          <Label color={(status === 'HIDDEN' && 'error') || 'success'}>{status}</Label>
         </TableCell>
 
         <TableCell align="right">
@@ -85,7 +102,7 @@ export default function UserTableRow({
         </TableCell>
       </TableRow>
       {/* modal */}
-      <ModalListReview openModal={openModal} setOpenModal={setOpenModal} idProvider={idProvider} />
+      {/* <ModalListReview openModal={openModal} setOpenModal={setOpenModal} idProvider={idProvider} /> */}
       {/* end */}
       <Popover
         open={!!open}
@@ -97,15 +114,19 @@ export default function UserTableRow({
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={handleCloseMenu}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
+        {status !== "PUBLIC" && (
+          <MenuItem onClick={() => handleEditUser({ status: "PUBLIC" })}>
+            <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
+            Public
+          </MenuItem>
+        )}
 
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
-          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
+        {status !== "HIDDEN" && (
+          <MenuItem onClick={() => handleEditUser({ status: "HIDDEN" })} sx={{ color: 'error.main' }}>
+            <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
+            Hidden
+          </MenuItem>
+        )}
       </Popover>
     </>
   );

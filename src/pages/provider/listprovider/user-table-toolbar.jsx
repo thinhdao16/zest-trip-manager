@@ -112,7 +112,7 @@ export default function UserTableToolbar({ numSelected, filterName, onFilterName
 
             <MenuItem onClick={() => handleFilterManagementProvider("PROCESSING")}>Processing</MenuItem>
             <MenuItem onClick={() => handleFilterManagementProvider("ACCEPTED")}>Accepted</MenuItem>
-            <MenuItem onClick={() => handleFilterManagementProvider("REJECTED")}>Rejected</MenuItem>
+            <MenuItem onClick={() => handleFilterManagementProvider("REJECT")}>Rejected</MenuItem>
             <MenuItem onClick={() => handleFilterManagementProvider("DISABLE")}> Disable </MenuItem>
             <MenuItem onClick={() => handleFilterManagementProvider("BANNED")}>Banned</MenuItem>
 

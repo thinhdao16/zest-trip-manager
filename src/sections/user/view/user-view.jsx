@@ -1,5 +1,5 @@
 /* eslint-disable import/no-named-as-default */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -12,6 +12,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 import { users } from 'src/_mock/user';
+import { DataContext } from 'src/store/datacontext/DataContext';
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
 
 import Iconify from 'src/components/iconify';
@@ -44,6 +45,7 @@ export default function UserPage() {
 
   const [data, setData] = useState([]);
 
+  const { loadingAccProvider } = useContext(DataContext)
   console.log(data)
   const [loading, setLoading] = useState(true);
 
@@ -127,7 +129,7 @@ export default function UserPage() {
         console.error('Error:', error);
         setLoading(false);
       });
-  }, []);
+  }, [loadingAccProvider]);
   const handleGetInfo = () => {
     console.log("first")
   }
@@ -165,7 +167,7 @@ export default function UserPage() {
                 headLabel={[
                   { id: 'full_name', label: 'Name' },
                   { id: 'email', label: 'Email' },
-                  { id: 'phone_number', label: 'Phone' },
+                  { id: 'phone_number', label: 'Role' },
                   { id: 'isVerified', label: 'Verified', align: 'center' },
                   { id: 'status', label: 'Status' },
                   { id: '' },
@@ -181,11 +183,12 @@ export default function UserPage() {
                       full_name={row.full_name}
                       email={row.email}
                       status={row.status}
-                      phone_number={row.phone_number}
+                      phone_number={row.role_id}
                       avatarUrl={row.avatarUrl}
                       isVerified={row.isVerified}
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.full_name)}
+                      data={row}
                     />
                   ))}
 

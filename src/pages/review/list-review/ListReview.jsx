@@ -43,6 +43,7 @@ export default function ListReview() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+
   const [data, setData] = useState({ data: [] });
   console.log(data)
   const [loading, setLoading] = useState(false);
@@ -182,6 +183,7 @@ export default function ListReview() {
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}
                       idProvider={row.id}
+                      data={row}
                     />
                   ))}
 
