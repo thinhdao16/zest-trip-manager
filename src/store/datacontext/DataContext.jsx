@@ -1,32 +1,37 @@
-import PropTypes from "prop-types";
-import React, { useState, createContext } from "react";
+import PropTypes from 'prop-types';
+import React, { useState, createContext } from 'react';
 
 export const DataContext = createContext({
-    data: {},
-    setData: () => { },
-    loadingAccProvider: {}, setLoadingAccProvider: () => { }
+  data: {},
+  setData: () => {},
+  loadingAccProvider: {},
+  setLoadingAccProvider: () => {},
+  bookingChart: {},
+  setBookingChart: () => {},
 });
 
 export function DataContextProvider({ children }) {
+  const [data, setData] = useState();
 
-    const [data, setData] = useState();
-
-    const [loadingAccProvider, setLoadingAccProvider] = useState(null)
-
-    return (
-        <DataContext.Provider
-            // eslint-disable-next-line react/jsx-no-constructed-context-values
-            value={{
-                data,
-                setData,
-                loadingAccProvider, setLoadingAccProvider
-            }}
-        >
-            {children}
-        </DataContext.Provider>
-    );
+  const [loadingAccProvider, setLoadingAccProvider] = useState(null);
+  const [bookingChart, setBookingChart] = useState();
+  return (
+    <DataContext.Provider
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
+      value={{
+        data,
+        setData,
+        loadingAccProvider,
+        setLoadingAccProvider,
+        bookingChart,
+        setBookingChart,
+      }}
+    >
+      {children}
+    </DataContext.Provider>
+  );
 }
 
 DataContextProvider.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
