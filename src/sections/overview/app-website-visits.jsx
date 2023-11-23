@@ -1,3 +1,4 @@
+import numeral from 'numeral';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -11,6 +12,16 @@ import Chart, { useChart } from 'src/components/chart';
 export default function AppWebsiteVisits({ title, subheader, chart, ...other }) {
   const { labels, colors, series, options } = chart;
 
+  // Tạo bản sao của mảng series để không ảnh hưởng đến dữ liệu gốc
+  const formattedSeries = series.map((dataSet) => {
+    const formattedData = dataSet.data.map((value) => numeral(value).value());
+    return {
+      ...dataSet,
+      data: formattedData,
+    };
+  });
+
+  console.log(parseInt(formattedSeries[0]?.data[6], 10));
   const chartOptions = useChart({
     colors,
     plotOptions: {
@@ -19,11 +30,11 @@ export default function AppWebsiteVisits({ title, subheader, chart, ...other }) 
       },
     },
     fill: {
-      type: series.map((i) => i.fill),
+      type: formattedSeries.map((i) => i.fill),
     },
     labels,
     xaxis: {
-      type: 'datetime',
+      type: 'category',
     },
     tooltip: {
       shared: true,
@@ -31,7 +42,7 @@ export default function AppWebsiteVisits({ title, subheader, chart, ...other }) 
       y: {
         formatter: (value) => {
           if (typeof value !== 'undefined') {
-            return `${value.toFixed(0)} visits`;
+            return numeral(value).format('0,0');
           }
           return value;
         },
@@ -48,7 +59,7 @@ export default function AppWebsiteVisits({ title, subheader, chart, ...other }) 
         <Chart
           dir="ltr"
           type="line"
-          series={series}
+          series={formattedSeries}
           options={chartOptions}
           width="100%"
           height={364}
