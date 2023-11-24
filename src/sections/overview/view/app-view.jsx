@@ -14,6 +14,7 @@ import Iconify from 'src/components/iconify';
 
 import AppTasks from '../app-tasks';
 import AppNewsUpdate from '../app-news-update';
+import { ListBooking } from '../app-list-booking';
 import AppOrderTimeline from '../app-order-timeline';
 import AppCurrentVisits from '../app-current-visits';
 import AppWebsiteVisits from '../app-website-visits';
@@ -26,7 +27,6 @@ import AppConversionRates from '../app-conversion-rates';
 
 export default function AppView() {
   const { bookingChart, setBookingChart } = useContext(DataContext);
-  console.log(bookingChart);
   function calculateTotalByDay(bookings, targetDay, propertyName, field, startDate, endDate) {
     const totalByDay = {};
     const totalByMonth = {};
@@ -117,7 +117,6 @@ export default function AppView() {
     const formattedEnd = dayjs(week.end).format('YYYY-MM-DD');
     return { start: formattedStart, end: formattedEnd };
   });
-
   const formattedLabelDayMonth = formattedLabels.map((week) => {
     const startFormatted = dayjs(week.start).format('MM/DD');
     const endFormatted = dayjs(week.end).format('MM/DD');
@@ -250,7 +249,7 @@ export default function AppView() {
             }}
           />
         </Grid>
-
+        <ListBooking />
         <Grid xs={12} md={6} lg={8}>
           <AppConversionRates
             title="Conversion Rates"

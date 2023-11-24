@@ -21,7 +21,6 @@ export default function AppWebsiteVisits({ title, subheader, chart, ...other }) 
     };
   });
 
-  console.log(parseInt(formattedSeries[0]?.data[6], 10));
   const chartOptions = useChart({
     colors,
     plotOptions: {
