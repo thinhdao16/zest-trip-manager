@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { faker } from '@faker-js/faker';
+// import { faker } from '@faker-js/faker';
 import { useEffect, useContext } from 'react';
 
 import Container from '@mui/material/Container';
@@ -10,23 +10,22 @@ import { DataContext } from 'src/store/datacontext/DataContext';
 // eslint-disable-next-line import/no-named-as-default
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
 
-import Iconify from 'src/components/iconify';
+// import Iconify from 'src/components/iconify';
 
-import AppTasks from '../app-tasks';
-import AppNewsUpdate from '../app-news-update';
+// import AppTasks from '../app-tasks';
+// import AppNewsUpdate from '../app-news-update';
 import { ListBooking } from '../app-list-booking';
-import AppOrderTimeline from '../app-order-timeline';
-import AppCurrentVisits from '../app-current-visits';
+// import AppOrderTimeline from '../app-order-timeline';
+// import AppCurrentVisits from '../app-current-visits';
 import AppWebsiteVisits from '../app-website-visits';
-import AppWidgetSummary from '../app-widget-summary';
-import AppTrafficBySite from '../app-traffic-by-site';
-import AppCurrentSubject from '../app-current-subject';
-import AppConversionRates from '../app-conversion-rates';
+// import AppTrafficBySite from '../app-traffic-by-site';
+// import AppCurrentSubject from '../app-current-subject';
+// import AppConversionRates from '../app-conversion-rates';
 
 // ----------------------------------------------------------------------
 
 export default function AppView() {
-  const { bookingChart, setBookingChart } = useContext(DataContext);
+  const { bookingChart, setBookingChart, setUser } = useContext(DataContext);
   function calculateTotalByDay(bookings, targetDay, propertyName, field, startDate, endDate) {
     const totalByDay = {};
     const totalByMonth = {};
@@ -134,7 +133,20 @@ export default function AppView() {
       .catch((error) => {
         console.error('Error:', error);
       });
-  }, [setBookingChart]);
+    axiosInstance
+      .get(`${BASE_URL}/admin/user`, {
+        params: {
+          orderBy: 'email:asc',
+        },
+      })
+      .then((response) => {
+        setUser(response.data.data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  }, [setBookingChart, setUser]);
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -142,46 +154,12 @@ export default function AppView() {
       </Typography>
 
       <Grid container spacing={3}>
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Weekly Sales"
-            total={714000}
-            color="success"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
-          />
-        </Grid>
 
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="New Users"
-            total={1352831}
-            color="info"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
-          />
-        </Grid>
-
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Item Orders"
-            total={1723315}
-            color="warning"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
-          />
-        </Grid>
-
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Bug Reports"
-            total={234}
-            color="error"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
-          />
-        </Grid>
 
         <Grid xs={12} md={6} lg={8}>
           <AppWebsiteVisits
-            title="Website Visits"
-            subheader="(+43%) than last year"
+            title="Statistic"
+            subheader="The last 7 weeks"
             chart={{
               labels: formattedLabelDayMonth,
               series: [
@@ -236,7 +214,7 @@ export default function AppView() {
           />
         </Grid>
 
-        <Grid xs={12} md={6} lg={4}>
+        {/* <Grid xs={12} md={6} lg={4}>
           <AppCurrentVisits
             title="Current Visits"
             chart={{
@@ -248,9 +226,9 @@ export default function AppView() {
               ],
             }}
           />
-        </Grid>
+        </Grid> */}
         <ListBooking />
-        <Grid xs={12} md={6} lg={8}>
+        {/* <Grid xs={12} md={6} lg={8}>
           <AppConversionRates
             title="Conversion Rates"
             subheader="(+43%) than last year"
@@ -355,7 +333,7 @@ export default function AppView() {
               { id: '5', name: 'Sprint Showcase' },
             ]}
           />
-        </Grid>
+        </Grid> */}
       </Grid>
     </Container>
   );

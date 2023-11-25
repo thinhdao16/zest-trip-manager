@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from 'react';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
@@ -16,7 +15,6 @@ import { DataContext } from 'src/store/datacontext/DataContext';
 // eslint-disable-next-line import/no-named-as-default
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
 
-import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from './table-no-data';
@@ -141,11 +139,9 @@ export default function AccProvider() {
                 <CircularProgress color="inherit" />
             </Backdrop>
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                <Typography variant="h4">Users</Typography>
+                <Typography variant="h4">Provider pending</Typography>
 
-                <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
-                    New User
-                </Button>
+
             </Stack>
 
             <Card>

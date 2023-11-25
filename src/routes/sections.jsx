@@ -15,6 +15,8 @@ const LazyAccProvider = lazy(() => import('src/pages/provider/accprovider/acc-pr
 const LazyListProvider = lazy(() => import('src/pages/provider/listprovider/list-provider'))
 const LazyReportProvider = lazy(() => import('src/pages/provider/reportprovider/report-provider'))
 const LazyListReview = lazy(() => import('src/pages/review/list-review/ListReview'))
+const LazyListBookingDetail = lazy(() => import("src/sections/overview/view/app-list-booking-detail"))
+const LazyListBookingDetailProduct = lazy(() => import("src/sections/overview/view/app-list-booking-detail-product"))
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('access_token');
@@ -51,7 +53,8 @@ export default function Router() {
         { path: 'list-provider', element: <ProtectedRoute element={<LazyListProvider />} /> },
         { path: 'report-provider', element: <ProtectedRoute element={<LazyReportProvider />} /> },
         { path: 'list-review', element: <ProtectedRoute element={<LazyListReview />} /> },
-
+        { path: 'list-booking-detail/:indexPid', element: <ProtectedRoute element={<LazyListBookingDetail />} /> },
+        { path: 'list-booking-detail/product/:indexPid', element: <ProtectedRoute element={<LazyListBookingDetailProduct />} /> },
         {
           // Handle empty path or unknown paths
           element: <ProtectedRoute element={<div>Page not found</div>} />,

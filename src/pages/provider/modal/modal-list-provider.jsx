@@ -255,7 +255,7 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                 className="flex gap-5 absolute bottom-0 bg-white w-full justify-center p-4 rounded-b-xl border border-solid border-gray-200"
                                 style={{ marginBottom: "-1px    " }}
                             >
-                                {dataProvider?.status !== 'REJECT' && (
+                                {dataProvider?.status !== 'REJECT' && dataProvider?.status !== 'ACCEPTED' && (
                                     <button
                                         className="px-6 py-2 bg-gray-300 rounded-lg text-gray-600 font-medium"
                                         type='button'
@@ -281,7 +281,7 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                     >
                                         Banned
                                     </button>)}
-                                {dataProvider?.status !== 'DISABLED' && role !== "Staff" && (
+                                {/* {dataProvider?.status !== 'DISABLED' && role !== "Staff" && (
                                     <button
                                         className="px-6 py-2 bg-red-300 rounded-lg text-red-900 font-medium"
                                         type='button'
@@ -290,7 +290,7 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                     >
                                         Disable
                                     </button>
-                                )}
+                                )} */}
                             </div>
                         </div>
 

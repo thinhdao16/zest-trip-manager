@@ -3,16 +3,19 @@ import React, { useState, createContext } from 'react';
 
 export const DataContext = createContext({
   data: {},
-  setData: () => {},
+  setData: () => { },
   loadingAccProvider: {},
-  setLoadingAccProvider: () => {},
+  setLoadingAccProvider: () => { },
   bookingChart: {},
-  setBookingChart: () => {},
+  setBookingChart: () => { },
+  user: {},
+  setUser: () => { }
 });
 
 export function DataContextProvider({ children }) {
   const [data, setData] = useState();
 
+  const [user, setUser] = useState()
   const [loadingAccProvider, setLoadingAccProvider] = useState(null);
   const [bookingChart, setBookingChart] = useState();
   return (
@@ -25,6 +28,7 @@ export function DataContextProvider({ children }) {
         setLoadingAccProvider,
         bookingChart,
         setBookingChart,
+        user, setUser
       }}
     >
       {children}

@@ -168,9 +168,9 @@ export default function UserPage() {
                   { id: 'full_name', label: 'Name' },
                   { id: 'email', label: 'Email' },
                   { id: 'phone_number', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
                   { id: 'status', label: 'Status' },
-                  { id: '' },
+                  { id: 'isVerified', label: 'Action', },
+
                 ]}
               />
               <TableBody>
@@ -179,7 +179,7 @@ export default function UserPage() {
                   .map((row) => (
                     <UserTableRow
                       onClick={() => handleGetInfo()}
-                      key={row.id}
+                      // key={row.id}
                       full_name={row.full_name}
                       email={row.email}
                       status={row.status}

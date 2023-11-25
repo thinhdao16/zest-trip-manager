@@ -7,7 +7,6 @@ import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
@@ -63,15 +62,13 @@ export default function UserTableRow({
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
-        <TableCell padding="checkbox">
-          <Checkbox disableRipple checked={selected} onChange={handleClick} />
-        </TableCell>
+
 
         <TableCell component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
             <Avatar alt={full_name} src={avatarUrl} />
             <Typography variant="subtitle2" noWrap>
-              {full_name || "Person"}
+              {full_name || "<No-Name>"}
             </Typography>
           </Stack>
         </TableCell>
@@ -82,14 +79,13 @@ export default function UserTableRow({
           {currentStatus && currentStatus.role_name}
         </TableCell>
 
-        <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
 
         <TableCell>
           <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
         </TableCell>
 
         <TableRow>
-          <TableCell align="right">
+          <TableCell align="center">
             {/* Render IconButton only if status is not 4 */}
             {phone_number !== 2 && (
               <IconButton onClick={(e) => handleOpenMenu(e, data)}>

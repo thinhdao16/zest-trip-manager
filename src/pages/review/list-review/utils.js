@@ -48,10 +48,15 @@ export function applyFilter({ inputData, comparator, filterName }) {
   inputData = stabilizedThis.map((el) => el[0]);
 
   if (filterName) {
-    inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-    );
+    inputData = inputData?.filter((user) => {
+
+      // Convert the user object to a string for a simple search
+      const userString = JSON.stringify(user);
+
+      return userString.toLowerCase().includes(filterName.toLowerCase());
+    });
   }
+
 
   return inputData;
 }

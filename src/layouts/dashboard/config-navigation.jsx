@@ -8,7 +8,7 @@ const icon = (name) => (
 
 const navConfig = [
   {
-    title: 'dashboard',
+    title: 'Provider statistic',
     path: '/',
     icon: icon('ic_analytics'),
   },
@@ -41,7 +41,7 @@ const navConfig = [
 ];
 export const navConfigStaff = [
   {
-    title: 'dashboard',
+    title: 'Provider statistic',
     path: '/',
     icon: icon('ic_analytics'),
   },
