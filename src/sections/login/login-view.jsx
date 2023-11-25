@@ -173,12 +173,7 @@ export default function LoginView() {
         >
           <Typography variant="h4">Sign in to ZestTravel</Typography>
 
-          <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            Don’t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-              Get started
-            </Link>
-          </Typography>
+
 
           {/* <Stack direction="row" spacing={2}>
             <Button
