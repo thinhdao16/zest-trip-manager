@@ -102,7 +102,7 @@ export default function AppView() {
     const weeks = Array.from({ length: 7 }, (_, weekIndex) => {
       const weekStart = thisSunday.subtract(weekIndex, 'week');
       const weekEnd = weekStart.add(6, 'day');
-      const endOfThisWeek = currentDate.isBefore(weekEnd) ? currentDate : weekEnd; // Lấy đến ngày hiện tại nếu tuần chưa kết thúc
+      const endOfThisWeek = currentDate.isBefore(weekEnd) ? currentDate : weekEnd;
       return { start: weekStart, end: endOfThisWeek };
     });
 
