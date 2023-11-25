@@ -5,6 +5,8 @@ import { useState, useContext } from 'react';
 import { RiSearchLine } from 'react-icons/ri';
 import { AiOutlineUp, AiFillFilter, AiOutlineDown } from 'react-icons/ai';
 
+import { Fade } from '@mui/material';
+
 import { formatNumber } from 'src/utils/formatNumber';
 
 import StatusBooking from 'src/status/booking';
@@ -80,12 +82,27 @@ export function ListBooking() {
   const sumAllValues = (data) => {
     if (typeof data === 'object' && data !== null) {
       const values = Object.values(data || {});
-      console.log(values);
       return values.reduce((sum, value) => sum + value, 0);
     }
     return 0;
   };
+  const filterBookingsByDateRange = (bookings, startDate, endDate) => bookings.filter((booking) => {
+    const updatedAtDate = new Date(booking.updated_at);
+    updatedAtDate.setUTCHours(0, 0, 0, 0); // Đặt giờ, phút, giây và mili giây về 0 ở múi giờ UTC
+    return (
+      updatedAtDate >= new Date(`${startDate}T00:00:00Z`) &&
+      updatedAtDate <= new Date(`${endDate}T23:59:59Z`)
+    );
+  });
 
+  // Khoảng ngày bạn muốn lọc (ví dụ: từ 2023-11-01 đến 2023-12-31)
+  const startDate = '2023-11-19';
+  const endDate = '2023-11-29';
+
+  // Lọc danh sách các booking
+  const filteredBookings = filterBookingsByDateRange(bookingChart, startDate, endDate);
+
+  console.log(filteredBookings)
   return (
     <div className="h-full bg-main overflow-auto global-scrollbar rounded-lg w-full">
       <div className="container mx-auto py-4 px-8">
@@ -199,7 +216,7 @@ export function ListBooking() {
                         <Fade in={expandedItems[index]} timeout={700}>
                           <div>
                             <hr className="mb-4" />
-                            {dataVoucher?.tours?.length > 0 ? (
+                            {filteredBookings(bookingChart,).length > 0 ? (
                               dataVoucher?.tours?.map(
                                 (voucherTour: any, index: number) => (
                                   <div
@@ -238,7 +255,7 @@ export function ListBooking() {
                             )}
                           </div>
                         </Fade>
-                      )} */}
+                      )}  */}
                 </div>
               ))
             ) : (
