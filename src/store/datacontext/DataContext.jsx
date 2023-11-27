@@ -9,7 +9,9 @@ export const DataContext = createContext({
   bookingChart: {},
   setBookingChart: () => { },
   user: {},
-  setUser: () => { }
+  setUser: () => { },
+  report: {}, setReport: () => { },
+  provider: {}, setProvider: () => { }
 });
 
 export function DataContextProvider({ children }) {
@@ -18,6 +20,8 @@ export function DataContextProvider({ children }) {
   const [user, setUser] = useState()
   const [loadingAccProvider, setLoadingAccProvider] = useState(null);
   const [bookingChart, setBookingChart] = useState();
+  const [report, setReport] = useState()
+  const [provider, setProvider] = useState()
   return (
     <DataContext.Provider
       // eslint-disable-next-line react/jsx-no-constructed-context-values
@@ -28,7 +32,9 @@ export function DataContextProvider({ children }) {
         setLoadingAccProvider,
         bookingChart,
         setBookingChart,
-        user, setUser
+        user, setUser,
+        report, setReport,
+        provider, setProvider
       }}
     >
       {children}

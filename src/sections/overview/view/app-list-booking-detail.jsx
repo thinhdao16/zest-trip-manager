@@ -21,11 +21,15 @@ function Payment() {
     const { indexPid } = useParams()
     console.log(indexPid)
     const { bookingChart, setBookingChart } = useContext(DataContext);
+    const filteredBookings = bookingChart.filter(
+        (booking) => booking.status !== "REJECT" && booking.status !== "PENDING" && booking.status !== "0"
+    );
     const filterBookingsByProviderId = (bookings, providerId) => bookings?.filter((booking) => {
         const bookingProviderId = booking?.BookingOnTour?.Provider?.id;
         return bookingProviderId === providerId;
     });
-    const bookingChartPid = filterBookingsByProviderId(bookingChart, indexPid)
+    const bookingChartPid = filterBookingsByProviderId(filteredBookings, indexPid)
+
 
     const toggleContentVisibility = (index) => {
         const newExpandedItems = { ...expandedItems };

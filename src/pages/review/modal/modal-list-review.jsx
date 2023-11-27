@@ -254,7 +254,7 @@ export default function ModalListReview({ openModal, setOpenModal, idProvider })
 
                                     onClick={() => handleCloseUpdate("ACCEPTED")}
                                 >
-                                    Accepted
+                                    Accept
                                 </button>
                             </div>
                         </div>

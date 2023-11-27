@@ -7,10 +7,10 @@ import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
-import { Backdrop, CircularProgress } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
 
 import { users } from 'src/_mock/user';
+import LoadingFullScreen from 'src/loading/LoadingFullScreen';
 import { DataContext } from 'src/store/datacontext/DataContext';
 // eslint-disable-next-line import/no-named-as-default
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
@@ -129,86 +129,86 @@ export default function AccProvider() {
     }, [loadingAccProvider]);
 
     return (
-        <Container>
-            <Backdrop
-                // eslint-disable-next-line no-shadow
-                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={loading}
-                onClick={() => setLoading(false)}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                <Typography variant="h4">Provider pending</Typography>
+        <>
+            {loading ? (
+                <LoadingFullScreen loading={loading} />
+            ) : (
+                <Container>
+
+                    <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                        <Typography variant="h4">Pending provider</Typography>
 
 
-            </Stack>
+                    </Stack>
 
-            <Card>
-                <UserTableToolbar
-                    numSelected={selected.length}
-                    filterName={filterName}
-                    onFilterName={handleFilterByName}
-                />
+                    <Card>
+                        <UserTableToolbar
+                            numSelected={selected.length}
+                            filterName={filterName}
+                            onFilterName={handleFilterByName}
+                        />
 
-                <Scrollbar>
-                    <TableContainer sx={{ overflow: 'unset' }}>
-                        <Table sx={{ minWidth: 800 }}>
-                            <UserTableHead
-                                order={order}
-                                orderBy={orderBy}
-                                rowCount={users.length}
-                                numSelected={selected.length}
-                                onRequestSort={handleSort}
-                                onSelectAllClick={handleSelectAllClick}
-                                headLabel={[
-                                    { id: 'name', label: 'Email' },
-                                    { id: 'company', label: 'Company' },
-                                    { id: 'role', label: 'Phone' },
-                                    { id: 'isVerified', label: 'Service type', align: 'center' },
-                                    { id: 'status', label: 'Status' },
-                                    { id: '' },
-                                ]}
-                            />
-                            <TableBody>
-                                {dataFiltered
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    ?.map((row) => (
-                                        <UserTableRow
-                                            key={row.id}
-                                            name={row.email}
-                                            role={row.phone}
-                                            status={row.status}
-                                            company={row.company_name}
-                                            avatarUrl={row.avatar_image_url}
-                                            isVerified={row.service_type}
-                                            selected={selected.indexOf(row.name) !== -1}
-                                            handleClick={(event) => handleClick(event, row.name)}
-                                            idProvider={row.id}
+                        <Scrollbar>
+                            <TableContainer sx={{ overflow: 'unset' }}>
+                                <Table sx={{ minWidth: 800 }}>
+                                    <UserTableHead
+                                        order={order}
+                                        orderBy={orderBy}
+                                        rowCount={users.length}
+                                        numSelected={selected.length}
+                                        onRequestSort={handleSort}
+                                        onSelectAllClick={handleSelectAllClick}
+                                        headLabel={[
+                                            { id: 'name', label: 'Email' },
+                                            { id: 'company', label: 'Company' },
+                                            { id: 'role', label: 'Phone' },
+                                            { id: 'isVerified', label: 'Service type', align: 'center' },
+                                            { id: 'status', label: 'Status' },
+                                            { id: '' },
+                                        ]}
+                                    />
+                                    <TableBody>
+                                        {dataFiltered
+                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            ?.map((row) => (
+                                                <UserTableRow
+                                                    key={row.id}
+                                                    name={row.email}
+                                                    role={row.phone}
+                                                    status={row.status}
+                                                    company={row.company_name}
+                                                    avatarUrl={row.avatar_image_url}
+                                                    isVerified={row.service_type}
+                                                    selected={selected.indexOf(row.name) !== -1}
+                                                    handleClick={(event) => handleClick(event, row.name)}
+                                                    idProvider={row.id}
+                                                />
+                                            ))}
+
+                                        <TableEmptyRows
+                                            height={77}
+                                            emptyRows={emptyRows(page, rowsPerPage, users.length)}
                                         />
-                                    ))}
 
-                                <TableEmptyRows
-                                    height={77}
-                                    emptyRows={emptyRows(page, rowsPerPage, users.length)}
-                                />
+                                        {notFound && <TableNoData query={filterName} />}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Scrollbar>
 
-                                {notFound && <TableNoData query={filterName} />}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Scrollbar>
+                        <TablePagination
+                            page={page}
+                            component="div"
+                            count={users.length}
+                            rowsPerPage={rowsPerPage}
+                            onPageChange={handleChangePage}
+                            rowsPerPageOptions={[5, 10, 25]}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </Card>
+                </Container>
+            )}
+        </>
 
-                <TablePagination
-                    page={page}
-                    component="div"
-                    count={users.length}
-                    rowsPerPage={rowsPerPage}
-                    onPageChange={handleChangePage}
-                    rowsPerPageOptions={[5, 10, 25]}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Card>
-        </Container>
     );
 }

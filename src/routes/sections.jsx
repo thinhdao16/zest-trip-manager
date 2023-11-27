@@ -13,7 +13,7 @@ const LazyBlogPage = lazy(() => import('src/pages/blog'));
 const LazyPage404 = lazy(() => import('src/pages/page-not-found'));
 const LazyAccProvider = lazy(() => import('src/pages/provider/accprovider/acc-provider'))
 const LazyListProvider = lazy(() => import('src/pages/provider/listprovider/list-provider'))
-const LazyReportProvider = lazy(() => import('src/pages/provider/reportprovider/report-provider'))
+const LazyReportProvider = lazy(() => import('src/pages/provider/reported/Reported'))
 const LazyListReview = lazy(() => import('src/pages/review/list-review/ListReview'))
 const LazyListBookingDetail = lazy(() => import("src/sections/overview/view/app-list-booking-detail"))
 const LazyListBookingDetailProduct = lazy(() => import("src/sections/overview/view/app-list-booking-detail-product"))

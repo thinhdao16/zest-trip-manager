@@ -14,6 +14,9 @@ import { DataContext } from 'src/store/datacontext/DataContext';
 
 export function ListBooking() {
   const { bookingChart } = useContext(DataContext);
+  const filteredBookings = bookingChart?.filter(
+    (booking) => booking.status !== "REJECT" && booking.status !== "PENDING" && booking.status !== "0"
+  );
   const [expandedItems, setExpandedItems] = useState({});
 
   const toggleContentVisibility = (index) => {
@@ -77,7 +80,7 @@ export function ListBooking() {
       };
     });
   const dataBooking = calculateChartData(
-    bookingChart,
+    filteredBookings,
     'paid_price',
     'original_price',
     'refund_ammount'
@@ -132,7 +135,6 @@ export function ListBooking() {
   };
 
 
-  console.log(sumBookingInWeekProvider(bookingChart, "2023-11-01", "2023-11-20"))
   return (
     <div className="h-full bg-main overflow-auto global-scrollbar rounded-lg w-full">
       <div className="container mx-auto py-4 px-8">
@@ -190,7 +192,6 @@ export function ListBooking() {
             {dataBooking?.length > 0 ? (
               Array.isArray(dataBooking) &&
               dataBooking?.map((dataVoucher, index) => (
-                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                 <div
                   key={index}
                   className="shadow-custom-card-mui bg-white rounded-lg relative"
@@ -241,11 +242,11 @@ export function ListBooking() {
                       </div>
                       <div className=" flex items-center">
                         {/* <StatusBooking>{dataVoucher?.status}</StatusBooking>
-                         */}
+                           */}
                         <span>
                           {
                             sumBookingInWeek(
-                              bookingChart,
+                              filteredBookings,
                               dataVoucher?.label?.start,
                               dataVoucher?.label?.end
                             )?.length
@@ -259,17 +260,16 @@ export function ListBooking() {
                       <div>
                         <hr className="mb-4" />
                         {sumBookingInWeekProvider(
-                          bookingChart,
+                          filteredBookings,
                           dataVoucher?.label?.start,
                           dataVoucher?.label?.end
                         )?.uniqueProviders?.length > 0 ? (
                           sumBookingInWeekProvider(
-                            bookingChart,
+                            filteredBookings,
                             dataVoucher?.label?.start,
                             dataVoucher?.label?.end
-                            // eslint-disable-next-line no-shadow
-                          )?.uniqueProviders?.map((dataBookingInWeek, index) => (
-                            <div className=" px-4  mb-4  relative " key={index}>
+                          )?.uniqueProviders?.map((dataBookingInWeek, indexDataBook) => (
+                            <div className=" px-4  mb-4  relative " key={indexDataBook}>
                               <Link to={`/list-booking-detail/${dataBookingInWeek?.id}`} key={dataBookingInWeek?.id}>
                                 <IoEye className='absolute top-0 right-2' />
 
@@ -297,7 +297,7 @@ export function ListBooking() {
                               {index <
                                 // eslint-disable-next-line no-unsafe-optional-chaining
                                 sumBookingInWeekProvider(
-                                  bookingChart,
+                                  filteredBookings,
                                   dataVoucher?.label?.start,
                                   dataVoucher?.label?.end
                                 )?.uniqueProviders?.length -
