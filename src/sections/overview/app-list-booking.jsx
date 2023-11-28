@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import dayjs from 'dayjs';
-import { IoEye } from "react-icons/io5";
+import { IoEye } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import { AiOutlineUp, AiOutlineDown } from 'react-icons/ai';
@@ -15,7 +15,8 @@ import { DataContext } from 'src/store/datacontext/DataContext';
 export function ListBooking() {
   const { bookingChart } = useContext(DataContext);
   const filteredBookings = bookingChart?.filter(
-    (booking) => booking.status !== "REJECT" && booking.status !== "PENDING" && booking.status !== "0"
+    (booking) =>
+      booking.status !== 'REJECT' && booking.status !== 'PENDING' && booking.status !== '0'
   );
   const [expandedItems, setExpandedItems] = useState({});
 
@@ -107,10 +108,9 @@ export function ListBooking() {
     const uniqueProvidersMap = new Map(); // Use a Map to store unique providers and their details
     const recentBookings = dataBookingWeek?.filter((booking) => {
       const bookedDate = dayjs(booking.updated_at);
-      const isWithinWeek = (
+      const isWithinWeek =
         bookedDate.isAfter(dayjs(startWeek).subtract(1, 'day'), 'day') &&
-        bookedDate.isBefore(dayjs(endWeek).add(1, 'day'), 'day')
-      );
+        bookedDate.isBefore(dayjs(endWeek).add(1, 'day'), 'day');
 
       if (isWithinWeek) {
         const providerId = booking?.BookingOnTour?.Provider?.id;
@@ -133,7 +133,6 @@ export function ListBooking() {
 
     return { recentBookings, uniqueProviders, totalUniqueProviders };
   };
-
 
   return (
     <div className="h-full bg-main overflow-auto global-scrollbar rounded-lg w-full">
@@ -192,10 +191,7 @@ export function ListBooking() {
             {dataBooking?.length > 0 ? (
               Array.isArray(dataBooking) &&
               dataBooking?.map((dataVoucher, index) => (
-                <div
-                  key={index}
-                  className="shadow-custom-card-mui bg-white rounded-lg relative"
-                >
+                <div key={index} className="shadow-custom-card-mui bg-white rounded-lg relative">
                   <div className=" px-4 py-6 relative ">
                     {!expandedItems[index] ? (
                       // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
@@ -203,7 +199,7 @@ export function ListBooking() {
                         className="absolute bottom-2 right-2 text-xs flex items-center gap-1"
                         onClick={() => toggleContentVisibility(index)}
                       >
-                        <span>See tour</span>
+                        <span>See provider</span>
                         <AiOutlineDown />
                       </div>
                     ) : (
@@ -242,7 +238,7 @@ export function ListBooking() {
                       </div>
                       <div className=" flex items-center">
                         {/* <StatusBooking>{dataVoucher?.status}</StatusBooking>
-                           */}
+                         */}
                         <span>
                           {
                             sumBookingInWeek(
@@ -270,27 +266,31 @@ export function ListBooking() {
                             dataVoucher?.label?.end
                           )?.uniqueProviders?.map((dataBookingInWeek, indexDataBook) => (
                             <div className=" px-4  mb-4  relative " key={indexDataBook}>
-                              <Link to={`/list-booking-detail/${dataBookingInWeek?.id}`} key={dataBookingInWeek?.id}>
-                                <IoEye className='absolute top-0 right-2' />
-
+                              <Link
+                                to={`/list-booking-detail/${dataBookingInWeek?.id}`}
+                                key={dataBookingInWeek?.id}
+                              >
+                                <IoEye className="absolute top-0 right-2" />
                               </Link>
                               <div className="grid grid-cols-5">
                                 <div>
-                                  <img src={dataBookingInWeek?.avatar_image_url} className='w-10 h-10 rounded-lg' alt="" />
-
+                                  <img
+                                    src={dataBookingInWeek?.avatar_image_url}
+                                    className="w-10 h-10 rounded-lg"
+                                    alt=""
+                                  />
                                 </div>
                                 <div>
                                   <span>{dataBookingInWeek?.email}</span>
                                 </div>
                                 <div>
                                   <span>{dataBookingInWeek?.company_name}</span>
-                                </div><div>
+                                </div>
+                                <div>
                                   <span>{dataBookingInWeek?.phone}</span>
                                 </div>
                                 <div>
-                                  <button type='button'>
-                                    {dataBookingInWeek?.status}
-                                  </button>
+                                  <button type="button">{dataBookingInWeek?.status}</button>
                                 </div>
                               </div>
 
@@ -301,13 +301,13 @@ export function ListBooking() {
                                   dataVoucher?.label?.start,
                                   dataVoucher?.label?.end
                                 )?.uniqueProviders?.length -
-                                1 && <hr className="mt-4" />}
+                                  1 && <hr className="mt-4" />}
                             </div>
                           ))
                         ) : (
                           <div className="flex items-center justify-center pb-6 pt-2">
                             <p className="bg-main p-1 rounded-lg shadow-custom-card-mui border border-gray-300 border-solid font-medium">
-                              No have payment
+                              No payment
                             </p>
                           </div>
                         )}

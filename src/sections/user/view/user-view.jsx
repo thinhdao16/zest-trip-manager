@@ -11,6 +11,8 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
+import { generateRowsPerPageOptions } from 'src/utils/generate-rows-per-page';
+
 import { users } from 'src/_mock/user';
 import { DataContext } from 'src/store/datacontext/DataContext';
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
@@ -45,8 +47,8 @@ export default function UserPage() {
 
   const [data, setData] = useState([]);
 
-  const { loadingAccProvider } = useContext(DataContext)
-  console.log(data)
+  const { loadingAccProvider } = useContext(DataContext);
+  console.log(data);
   const [loading, setLoading] = useState(true);
 
   const handleSort = (event, id) => {
@@ -107,6 +109,7 @@ export default function UserPage() {
   const handleOpen = () => setOpen(true);
   const notFound = !dataFiltered.length && !!filterName;
 
+  const rowsPerPageOptions = generateRowsPerPageOptions(data?.length);
 
   useEffect(() => {
     const queryParams = {
@@ -131,8 +134,8 @@ export default function UserPage() {
       });
   }, [loadingAccProvider]);
   const handleGetInfo = () => {
-    console.log("first")
-  }
+    console.log('first');
+  };
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -141,7 +144,12 @@ export default function UserPage() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Users</Typography>
 
-        <Button onClick={handleOpen} variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+        <Button
+          onClick={handleOpen}
+          variant="contained"
+          color="inherit"
+          startIcon={<Iconify icon="eva:plus-fill" />}
+        >
           New User
         </Button>
         <ModalUser openModal={open} setOpenModal={setOpen} />
@@ -169,8 +177,7 @@ export default function UserPage() {
                   { id: 'email', label: 'Email' },
                   { id: 'phone_number', label: 'Role' },
                   { id: 'status', label: 'Status' },
-                  { id: 'isVerified', label: 'Action', },
-
+                  { id: 'isVerified', label: 'Action' },
                 ]}
               />
               <TableBody>
@@ -206,10 +213,10 @@ export default function UserPage() {
         <TablePagination
           page={page}
           component="div"
-          count={users.length}
+          count={data?.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={rowsPerPageOptions}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
