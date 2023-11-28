@@ -58,7 +58,7 @@ export function ListBooking() {
       return { start: weekStart.format('YYYY-MM-DD'), end: weekEnd.format('YYYY-MM-DD') };
     });
 
-    return weeks.reverse();
+    return weeks;
   }
 
   const lableWeeks = calculateWeeks();
@@ -116,11 +116,8 @@ export function ListBooking() {
         const providerId = booking?.BookingOnTour?.Provider?.id;
 
         if (providerId && !uniqueProvidersMap.has(providerId)) {
-          // If the provider ID is not in the map, add it with its details
           uniqueProvidersMap.set(providerId, {
             ...booking?.BookingOnTour?.Provider,
-            // Add other details you want from the Provider here
-            // For example: name, address, etc.
           });
         }
       }
@@ -128,7 +125,7 @@ export function ListBooking() {
       return isWithinWeek;
     });
 
-    const uniqueProviders = Array.from(uniqueProvidersMap.values()); // Get values from the Map
+    const uniqueProviders = Array.from(uniqueProvidersMap.values());
     const totalUniqueProviders = uniqueProviders.length;
 
     return { recentBookings, uniqueProviders, totalUniqueProviders };
@@ -137,34 +134,6 @@ export function ListBooking() {
   return (
     <div className="h-full bg-main overflow-auto global-scrollbar rounded-lg w-full">
       <div className="container mx-auto py-4 px-8">
-        {/* <div className="mb-6 flex items-center justify-between">
-          <div className="flex flex-col">
-            <h1 className="text-2xl font-semibold ">Payment method</h1>
-            <span className="text-gray-500">When provider have voucher new, they open here</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <RiSearchLine className="absolute top-2 left-2" />
-              <input
-                type="text"
-                name=""
-                id=""
-                placeholder="Search"
-                className="border border-gray-300 pl-8 py-1 w-24 rounded-md"
-              />
-            </div>
-            <div>
-              <button
-                type="button"
-                className="relative bg-white shadow-custom-card-mui border border-gray-300 pl-0 py-1 w-24 rounded-md"
-              >
-                <AiFillFilter className="absolute top-2 left-2" />
-                Filter
-              </button>
-            </div>
-          </div>
-        </div> */}
-
         <div className="text-lg font-medium pb-2"> Payment history</div>
         <div className="container flex flex-col gap-4">
           <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">
