@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FileDownload from 'react-file-download';
+import { Link } from 'react-router-dom';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 import Box from '@mui/material/Box';
@@ -235,20 +235,22 @@ export default function ModalAccProvider({ openModal, setOpenModal, idProvider }
                                                             <img src={dataProvider?.avatar_image_url || "https://i.pinimg.com/736x/fa/60/51/fa6051d72b821cb48a8cc71d3481dfef.jpg"} className=' rounded-full object-cover w-20 h-20' alt="wait" />
                                                         </div>
                                                         <div className="absolute top-32 right-10 flex gap-3">
-                                                            <a
+                                                            <Link
                                                                 className='text-blue-500'
-                                                                href={dataProvider?.avatar_image_url}
+                                                                to={dataProvider?.avatar_image_url}
+                                                                target="_blank"
+
                                                             // onClick={() => FileDownload(dataProvider?.avatar_image_url, `${dataProvider?.avatar_image_url}`)}
                                                             >
                                                                 View avatar
-                                                            </a>
-                                                            <a
+                                                            </Link>
+                                                            <Link
+                                                                target="_blank"
                                                                 className='text-blue-900'
-                                                                href="#"
-                                                                onClick={() => FileDownload(dataProvider?.banner_image_url, `${dataProvider?.banner_image_url}`)}
+                                                                to={dataProvider?.banner_image_url}
                                                             >
                                                                 View banner
-                                                            </a>
+                                                            </Link>
                                                         </div>
                                                     </div>
                                                 </div>

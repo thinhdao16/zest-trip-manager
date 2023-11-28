@@ -30,9 +30,7 @@ export default function UserTableRow({
 }) {
   const [open, setOpen] = useState(null);
   const [openModal, setOpenModal] = useState(false)
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
+
 
   const handleCloseMenu = () => {
     setOpen(null);
@@ -75,7 +73,9 @@ export default function UserTableRow({
         </TableCell>
 
         <TableCell align="right">
-          <IconButton onClick={(e) => handleOpenMenu(e)}>
+          {/* <IconButton onClick={(e) => handleOpenMenu(e)}> */}
+          <IconButton >
+
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
         </TableCell>

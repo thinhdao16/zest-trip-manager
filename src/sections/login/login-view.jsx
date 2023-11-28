@@ -171,7 +171,10 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography variant="h4">Sign in to ZestTravel</Typography>
+          <div className='pb-6'>
+            <Typography variant="h4" >Sign in to ZestTravel</Typography>
+
+          </div>
 
 
 

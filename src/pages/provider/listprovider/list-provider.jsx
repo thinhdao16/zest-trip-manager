@@ -46,7 +46,7 @@ export default function ListProvider() {
   const [data, setData] = useState({ providers: [] });
   const [loading, setLoading] = useState(false);
   const rowsPerPageOptions = generateRowsPerPageOptions(data?.providers?.length);
-
+  console.log(data)
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
     if (id !== '') {

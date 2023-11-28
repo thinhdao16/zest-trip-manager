@@ -269,15 +269,17 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                             >
                                                 Accept
                                             </button>)}
-                                        {dataProvider?.status !== 'BANNED' && (
+                                        {(dataProvider?.status !== 'BANNED' || dataProvider?.status !== 'PROGESSING') && dataProvider?.status === 'ACCEPTED' && (
                                             <button
                                                 className="px-6 py-2 bg-yellow-300 rounded-lg text-yellow-900 font-medium"
                                                 type='button'
                                                 onClick={() => handleCloseUpdate("BANNED")}
                                             >
                                                 Ban
-                                            </button>)}
-                                        {dataProvider?.status !== 'DISABLED' && role !== "Staff" && (
+                                            </button>
+                                        )}
+
+                                        {(dataProvider?.status !== 'DISABLED' || role !== "Staff") && dataProvider?.status !== 'PROCESSING' && dataProvider?.status !== 'REJECT' && (
                                             <button
                                                 className="px-6 py-2 bg-red-300 rounded-lg text-red-900 font-medium"
                                                 type='button'
