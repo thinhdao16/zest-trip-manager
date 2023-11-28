@@ -21,7 +21,7 @@ function Payment() {
   const { indexPid } = useParams();
   console.log(indexPid);
   const { bookingChart, setBookingChart } = useContext(DataContext);
-  const filteredBookings = bookingChart.filter(
+  const filteredBookings = bookingChart?.filter(
     (booking) =>
       booking.status !== 'REJECT' && booking.status !== 'PENDING' && booking.status !== '0'
   );
@@ -144,8 +144,10 @@ function Payment() {
         <div className="container mx-auto py-4 px-8">
           <div className="mb-6 flex items-center justify-between">
             <div className="flex flex-col">
-              <h1 className="text-2xl font-semibold ">Payment method</h1>
-              <span className="text-gray-500">When provider have voucher new, they open here</span>
+              <h1 className="text-2xl font-semibold ">Payment statistic</h1>
+              <span className="text-gray-500">
+                The total monetary value of all transactions conducted within the defined timeframe.
+              </span>
             </div>
             <div className="flex items-center gap-3">
               <div className="relative">
