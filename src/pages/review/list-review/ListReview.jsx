@@ -10,6 +10,8 @@ import TableContainer from '@mui/material/TableContainer';
 import { Backdrop, CircularProgress } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
 
+import { generateRowsPerPageOptions } from 'src/utils/generate-rows-per-page';
+
 import { users } from 'src/_mock/user';
 import { DataContext } from 'src/store/datacontext/DataContext';
 // eslint-disable-next-line import/no-named-as-default
@@ -41,9 +43,9 @@ export default function ListReview() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-
   const [data, setData] = useState({ data: [] });
-  console.log(data)
+  console.log(data);
+  const rowsPerPageOptions = generateRowsPerPageOptions(data?.data?.length);
   const [loading, setLoading] = useState(false);
 
   const handleSort = (event, id) => {
@@ -100,13 +102,10 @@ export default function ListReview() {
     comparator: getComparator(order, orderBy),
     filterName,
   });
-
   const notFound = !dataFiltered.length && !!filterName;
 
   useEffect(() => {
-    const queryParams = {
-
-    };
+    const queryParams = {};
 
     axiosInstance
       .get(`${BASE_URL}/staff/review`, {
@@ -134,8 +133,6 @@ export default function ListReview() {
       </Backdrop>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Review</Typography>
-
-
       </Stack>
 
       <Card>
@@ -200,7 +197,7 @@ export default function ListReview() {
           count={data?.total}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={rowsPerPageOptions}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
