@@ -27,5 +27,11 @@
 .global-scrollbar::-webkit-scrollbar-thumb:active {
   background: rgba(0, 0, 0, 0.9);
 }
-
+/* styles.css or your preferred stylesheet */
+.custom-date-range-picker .DateRangePicker-logoContainer {
+  display: none;
+}
+.custom-date-range-picker .MuiDialogActions-root{
+  display: none;
+}
 /*end*/
