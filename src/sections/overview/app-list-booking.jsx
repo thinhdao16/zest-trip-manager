@@ -15,7 +15,7 @@ import { DataContext } from 'src/store/datacontext/DataContext';
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
 
 export function ListBooking() {
-  const { bookingChart, saveDateChartChoose, fieldSaveDateChartChoose, setAllTour, allTour } =
+  const { bookingChart, saveDateChartChoose, fieldSaveDateChartChoose, setAllTour } =
     useContext(DataContext);
   const navigate = useNavigate();
   const filteredBookings = bookingChart?.filter(
