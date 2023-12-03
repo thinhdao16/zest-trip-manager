@@ -89,4 +89,20 @@ export const navConfigManagerProvider = [
   },
 
 ];
+export const navConfigManagerGlobal = [
+  {
+    title: 'Commision',
+    path: '/global',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'Boost',
+    path: '/list-providers',
+    icon: icon('ic_user'),
+  }, {
+    title: 'Banner',
+    path: '/list-providers',
+    icon: icon('ic_user'),
+  },
+];
 export default navConfig;

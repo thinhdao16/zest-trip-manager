@@ -27,6 +27,9 @@ const LazyListBookingDetailFilter = lazy(() =>
 const LazyListBookingTourDetailFilter = lazy(() =>
   import('src/sections/overview/view/app-list-booking-tour-detail-filter')
 );
+const LazyGlobal = lazy(() =>
+  import('src/pages/commision/commision')
+);
 const isAuthenticated = () => {
   const token = localStorage.getItem('access_token');
   return !!token; // Return true if a token exists, false otherwise
@@ -62,6 +65,8 @@ export default function Router() {
         { path: 'list-provider', element: <ProtectedRoute element={<LazyListProvider />} /> },
         { path: 'report-provider', element: <ProtectedRoute element={<LazyReportProvider />} /> },
         { path: 'list-review', element: <ProtectedRoute element={<LazyListReview />} /> },
+        { path: 'global', element: <ProtectedRoute element={<LazyGlobal />} /> },
+
         {
           path: 'list-booking-detail/:indexPid',
           element: <ProtectedRoute element={<LazyListBookingDetail />} />,

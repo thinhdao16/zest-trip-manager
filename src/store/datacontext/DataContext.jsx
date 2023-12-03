@@ -3,23 +3,26 @@ import React, { useState, createContext } from 'react';
 
 export const DataContext = createContext({
   data: {},
-  setData: () => {},
+  setData: () => { },
   loadingAccProvider: {},
-  setLoadingAccProvider: () => {},
+  setLoadingAccProvider: () => { },
   bookingChart: {},
-  setBookingChart: () => {},
+  setBookingChart: () => { },
   user: {},
-  setUser: () => {},
+  setUser: () => { },
   report: {},
-  setReport: () => {},
+  setReport: () => { },
   provider: {},
-  setProvider: () => {},
+  setProvider: () => { },
   saveDateChartChoose: {},
-  setSaveDateChartChoose: () => {},
+  setSaveDateChartChoose: () => { },
   fieldSaveDateChartChoose: {},
-  setFieldSaveDateChartChoose: () => {},
+  setFieldSaveDateChartChoose: () => { },
   allTour: {},
-  setAllTour: () => {},
+  setAllTour: () => { },
+  promotion: {}, setPromotion: () => { },
+  commision: {}, setCommision: () => { },
+  banner: {}, setBanner: () => { }
 });
 
 export function DataContextProvider({ children }) {
@@ -33,6 +36,9 @@ export function DataContextProvider({ children }) {
 
   const [saveDateChartChoose, setSaveDateChartChoose] = useState();
   const [fieldSaveDateChartChoose, setFieldSaveDateChartChoose] = useState('normal');
+  const [promotion, setPromotion] = useState(0)
+  const [commision, setCommision] = useState(0)
+  const [banner, setBanner] = useState()
   return (
     <DataContext.Provider
       // eslint-disable-next-line react/jsx-no-constructed-context-values
@@ -55,6 +61,8 @@ export function DataContextProvider({ children }) {
         setFieldSaveDateChartChoose,
         allTour,
         setAllTour,
+        promotion, setPromotion,
+        commision, setCommision, banner, setBanner
       }}
     >
       {children}

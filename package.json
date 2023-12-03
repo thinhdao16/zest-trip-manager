@@ -28,6 +28,7 @@
     "@mui/material": "^5.14.12",
     "@mui/x-date-pickers": "^6.18.2",
     "@mui/x-date-pickers-pro": "^6.18.2",
+    "antd": "^5.11.5",
     "apexcharts": "^3.43.0",
     "axios": "^1.5.1",
     "date-fns": "^2.30.0",

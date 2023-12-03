@@ -24,7 +24,8 @@ import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
-import navConfig, { navConfigStaff, navConfigManagerProvider } from './config-navigation';
+// eslint-disable-next-line import/named
+import navConfig, { navConfigStaff, navConfigManagerGlobal, navConfigManagerProvider } from './config-navigation';
 
 // ----------------------------------------------------------------------
 
@@ -106,6 +107,8 @@ export default function Nav({ openNav, onCloseNav }) {
     </Box>
   );
   const pathManagement = navConfigManagerProvider?.some((item) => pathname === item.path);
+  const pathGlobal = navConfigManagerGlobal?.some((item) => pathname === item.path);
+
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
@@ -130,6 +133,14 @@ export default function Nav({ openNav, onCloseNav }) {
               bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
             },
           }),
+          ...(pathManagement && {
+            color: 'primary.main',
+            fontWeight: 'fontWeightSemiBold',
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+            '&:hover': {
+              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
+            },
+          })
         }}
         onClick={() => toggleContentVisibility("provider")}
       >
@@ -137,6 +148,7 @@ export default function Nav({ openNav, onCloseNav }) {
           <AiTwotoneSwitcher className='w-6 h-6' />
         </Box>
         <Box component="span">Provider Management</Box>
+
         {!expanded?.provider ? (
           <AiOutlineDown className='absolute right-4' />
         ) : (
@@ -150,6 +162,83 @@ export default function Nav({ openNav, onCloseNav }) {
 
 
             {expanded?.provider && (
+              <Fade in={expanded} timeout={700}>
+                <ListItemButton
+                  component={RouterLink}
+                  href={item?.path}
+                  sx={{
+                    position: "relative",
+                    minHeight: 44,
+                    borderRadius: 0.75,
+                    paddingLeft: 7,
+                    typography: 'body2',
+                    color: 'text.secondary',
+                    textTransform: 'capitalize',
+                    fontWeight: 'fontWeightMedium',
+                    ...(activeProvider && {
+                      color: 'primary.main',
+                      fontWeight: 'fontWeightSemiBold',
+                      '&:hover': {
+                        bgcolor: (theme) => alpha(theme.palette.grey[300]),
+                      },
+                    }),
+                  }}
+                >
+                  <span>{item?.title}</span>
+                </ListItemButton>
+              </Fade>
+            )}
+          </React.Fragment>
+        )
+      })}
+
+      <ListItemButton
+        component={RouterLink}
+        sx={{
+          position: "relative",
+          minHeight: 44,
+          borderRadius: 0.75,
+          typography: 'body2',
+          color: 'text.secondary',
+          textTransform: 'capitalize',
+          fontWeight: 'fontWeightMedium',
+          ...(pathGlobal && {
+            color: 'primary.main',
+            fontWeight: 'fontWeightSemiBold',
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+            '&:hover': {
+              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
+            },
+          }),
+          ...(pathGlobal && {
+            color: 'primary.main',
+            fontWeight: 'fontWeightSemiBold',
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+            '&:hover': {
+              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
+            },
+          })
+        }}
+        onClick={() => toggleContentVisibility("global")}
+      >
+        <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
+          <AiTwotoneSwitcher className='w-6 h-6' />
+        </Box>
+        <Box component="span">Global Management</Box>
+
+        {!expanded?.global ? (
+          <AiOutlineDown className='absolute right-4' />
+        ) : (
+          <AiOutlineUp className='absolute right-4' />
+        )}
+      </ListItemButton>
+      {navConfigManagerGlobal?.map((item, index) => {
+        const activeProvider = pathname === item?.path;
+        return (
+          <React.Fragment key={index}>
+
+
+            {expanded?.global && (
               <Fade in={expanded} timeout={700}>
                 <ListItemButton
                   component={RouterLink}
@@ -202,6 +291,7 @@ export default function Nav({ openNav, onCloseNav }) {
       {renderAccount}
 
       {renderMenu}
+
 
       <Box sx={{ flexGrow: 1 }} />
 
