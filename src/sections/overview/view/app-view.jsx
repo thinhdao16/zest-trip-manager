@@ -4,32 +4,21 @@ import { useState, useEffect, useContext } from 'react';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
+import { LicenseInfo } from '@mui/x-license-pro';
 import Typography from '@mui/material/Typography';
-
-import { DataContext } from 'src/store/datacontext/DataContext';
-// eslint-disable-next-line import/no-named-as-default
-import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
-
-// import Iconify from 'src/components/iconify';
-
-// import AppTasks from '../app-tasks';
-// import AppNewsUpdate from '../app-news-update';
-// import AppOrderTimeline from '../app-order-timeline';
-// import AppCurrentVisits from '../app-current-visits';
-// import AppTrafficBySite from '../app-traffic-by-site';
-// import AppCurrentSubject from '../app-current-subject';
-// import AppConversionRates from '../app-conversion-rates';
-
-// import '@mui/x-date-pickers/dist/static-date-range-picker.css';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDateRangePicker } from '@mui/x-date-pickers-pro/StaticDateRangePicker';
 import { SingleInputDateRangeField } from '@mui/x-date-pickers-pro/SingleInputDateRangeField';
 
+import { DataContext } from 'src/store/datacontext/DataContext';
+// eslint-disable-next-line import/no-named-as-default
+import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
+
 import { ListBooking } from '../app-list-booking';
 import AppWebsiteVisits from '../app-website-visits';
 // ----------------------------------------------------------------------
-
+LicenseInfo.setLicenseKey("x0jTPl0USVkVZV0SsMjM1kDNyADM5cjM2ETPZJVSQhVRsIDN0YTM6IVREJ1T0b9586ef25c9853decfa7709eee27a1e")
 export default function AppView() {
   const {
     bookingChart,
@@ -254,6 +243,7 @@ export default function AppView() {
                   value={selectedDateRange}
                   onChange={handleDateChange}
                 />
+
               </div>
             </LocalizationProvider>
             <div className="text-center">

@@ -1,18 +1,24 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import dayjs from 'dayjs';
 import { useParams } from 'react-router-dom';
+import { TiArrowRight } from "react-icons/ti";
+import { RiMoneyDollarCircleLine } from 'react-icons/ri';
 import { useMemo, useState, useEffect, useContext } from 'react';
+
+import { Rating } from '@mui/material';
 
 import { formatNumber } from 'src/utils/formatNumber';
 
+import { StatusTour } from 'src/status/tour';
 import { DataContext } from 'src/store/datacontext/DataContext';
 // eslint-disable-next-line import/no-named-as-default
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
-
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 function ListPaymentTourFilterDate() {
   const [expandedItems, setExpandedItems] = useState({});
+  const [tour, setTour] = useState({})
+  console.log(tour)
   const { indexPid } = useParams();
   const { bookingChart, setBookingChart } = useContext(DataContext);
   const filteredBookings = bookingChart?.filter(
@@ -35,7 +41,6 @@ function ListPaymentTourFilterDate() {
 
   const filterBookingsByProviderId = (bookings, providerId) =>
     bookings?.filter((booking) => {
-      console.log(booking);
       const bookingProviderId = booking?.BookingOnTour?.id;
       return bookingProviderId === providerId;
     });
@@ -57,7 +62,15 @@ function ListPaymentTourFilterDate() {
       .catch((error) => {
         console.error('Error:', error);
       });
-  }, [setBookingChart]);
+    axiosInstance
+      .get(`${BASE_URL}/tour/detail/${indexPid}`,)
+      .then((response) => {
+        setTour(response.data.data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }, [indexPid, setBookingChart]);
   return (
     <>
       {/* <Backdrop
@@ -78,6 +91,31 @@ function ListPaymentTourFilterDate() {
             </div>
           </div>
           <div />
+          <div className='flex items-center gap-3 p-4 rounded-md shadow-custom-card-mui relative'>
+            <div className='absolute top-4 right-4'>
+              <StatusTour>{tour?.status}</StatusTour>
+
+            </div>
+            <img src={tour?.tour_images?.[0]} alt="" className='w-24 h-24 object-cover rounded-md' />
+            <div className='flex flex-col'>
+              <p className='font-medium'>{tour?.name}</p>
+              <span>
+                {tour?.address_name},{" "} {tour?.address_ward},
+                {" "} {tour?.address_district},{" "} {tour?.address_province},
+                {" "} {tour?.address_country}
+              </span>
+              <div className='flex items-center'>
+                <RiMoneyDollarCircleLine />
+                {formatNumber(parseInt(tour?.from_price, 10))}
+                <TiArrowRight className='mx-2' />
+                <RiMoneyDollarCircleLine />
+                {formatNumber(parseInt(tour?.to_price, 10))}
+
+
+              </div>
+              <Rating name="half-rating-read" defaultValue={tour?.average_rating} precision={0.5} readOnly />
+            </div>
+          </div>
           <div className="text-lg font-medium pb-2"> Payment history</div>
           <div className="container flex flex-col gap-4">
             <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">

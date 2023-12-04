@@ -1,3 +1,6 @@
+import { AiOutlineGlobal } from 'react-icons/ai';
+import { MdOutlineRateReview } from "react-icons/md";
+
 import SvgColor from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -21,23 +24,18 @@ const navConfig = [
   {
     title: 'review',
     path: '/list-review',
-    icon: icon('ic_user'),
+    icon: <MdOutlineRateReview className='w-6 h-6' />,
   },
-  // {
-  //   title: 'product',
-  //   path: '/products',
-  //   icon: icon('ic_cart'),
-  // },
-  // {
-  //   title: 'report',
-  //   path: '/report',
-  //   icon: icon('ic_cart'),
-  // },
-  // {
-  //   title: 'Not found',
-  //   path: '/404',
-  //   icon: icon('ic_disabled'),
-  // },
+  {
+    title: 'Global',
+    path: '/global',
+    icon: <AiOutlineGlobal className='w-6 h-6' />,
+  },
+  {
+    title: 'Tour Provider',
+    path: '/list-provider-tour',
+    icon: <AiOutlineGlobal className='w-6 h-6' />,
+  },
 ];
 export const navConfigStaff = [
   {
@@ -50,26 +48,11 @@ export const navConfigStaff = [
     path: '/list-review',
     icon: icon('ic_user'),
   },
-  // {
-  //   title: 'product',
-  //   path: '/products',
-  //   icon: icon('ic_cart'),
-  // },
-  // {
-  //   title: 'blog',
-  //   path: '/blog',
-  //   icon: icon('ic_blog'),
-  // },
-  // {
-  //   title: 'report',
-  //   path: '/report',
-  //   icon: icon('ic_cart'),
-  // },
-  // {
-  //   title: 'Not found',
-  //   path: '/404',
-  //   icon: icon('ic_disabled'),
-  // },
+  {
+    title: 'Global',
+    path: '/global',
+    icon: icon('ic_user'),
+  },
 ];
 export const navConfigManagerProvider = [
   {
@@ -89,20 +72,5 @@ export const navConfigManagerProvider = [
   },
 
 ];
-export const navConfigManagerGlobal = [
-  {
-    title: 'Commision',
-    path: '/global',
-    icon: icon('ic_user'),
-  },
-  {
-    title: 'Boost',
-    path: '/list-providers',
-    icon: icon('ic_user'),
-  }, {
-    title: 'Banner',
-    path: '/list-providers',
-    icon: icon('ic_user'),
-  },
-];
+
 export default navConfig;

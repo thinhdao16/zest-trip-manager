@@ -13,6 +13,8 @@ import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
 
 function ListPaymentFilterDate() {
   const [expandedItems, setExpandedItems] = useState({});
+  const [provider, setProvider] = useState({})
+  console.log(provider)
   const { indexPid } = useParams();
   const { bookingChart, setBookingChart } = useContext(DataContext);
   const filteredBookings = bookingChart?.filter(
@@ -56,7 +58,15 @@ function ListPaymentFilterDate() {
       .catch((error) => {
         console.error('Error:', error);
       });
-  }, [setBookingChart]);
+    axiosInstance
+      .get(`${BASE_URL}/staff/provider-management/providers/${indexPid}`,)
+      .then((response) => {
+        setProvider(response.data.data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }, [indexPid, setBookingChart]);
   return (
     <>
       {/* <Backdrop
@@ -77,6 +87,22 @@ function ListPaymentFilterDate() {
             </div>
           </div>
           <div />
+          <div className='bg-white p-4 rounded-lg shadow-custom-card-mui'>
+            <div className='flex items-center gap-3'>
+              <img src={provider?.avatar_image_url} alt="" className='w-20 h-20 rounded-md shadow-custom-card-mui' />
+              <div className=''>
+                <p>{provider?.company_name}</p>
+                <span>{provider?.email}</span>
+                <div>
+                  <span>{provider?.address_name}</span>,{" "}
+                  <span>{provider?.address_ward}</span>,{" "}
+                  <span>{provider?.address_district}</span>,{" "}
+                  <span>{provider?.address_province}</span>,{" "}
+                  <span>{provider?.address_country}</span>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="text-lg font-medium pb-2"> Payment history</div>
           <div className="container flex flex-col gap-4">
             <div className="bg-white p-3 rounded-lg shadow-custom-card-mui">

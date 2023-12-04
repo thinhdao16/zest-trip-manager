@@ -1,8 +1,8 @@
-import { Upload, message } from 'antd';
 import { FiEdit } from 'react-icons/fi';
 import { useState, useEffect, useContext } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+
+import { message } from 'antd';
 
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
@@ -33,8 +33,9 @@ export default function ListProvider() {
     const [editCommission, setEditCommission] = useState(commision)
     const [openEditCommission, setOpenEditCommission] = useState(true)
 
-    const [files, setFiles] = useState(null);
-    const [loadingImg, setLoadingImg] = useState(false);
+    const [openEditBanner, setOpenEditBanner] = useState(true)
+
+    const [fileList, setFileList] = useState([]);
 
     const formatNumberWithCommas = (value) => {
         const numericValue = value.toString().replace(/[^0-9]/g, "");
@@ -51,6 +52,9 @@ export default function ListProvider() {
     }
     const handleOpenEditCommission = () => {
         setOpenEditCommission(false);
+    }
+    const handleOpenEditBanner = () => {
+        setOpenEditBanner(false);
     }
     const handleCloseEditPromotion = () => {
         setLoading(true)
@@ -89,81 +93,37 @@ export default function ListProvider() {
             )
     }
 
-
-    const handleChange = async (info) => {
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-            setLoadingImg(false);
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-            setLoadingImg(false);
-        }
-    };
-
-    const beforeUpload = (file) => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
-        }
-        const isLt2M = file.size / 1024 / 1024 < 8;
-        if (!isLt2M) {
-            message.error('Image must be smaller than 8MB!');
-        }
-
-        // Nếu hình ảnh hợp lệ, chuyển đổi thành định dạng file
-        if (isJpgOrPng && isLt2M) {
-            convertToBlob(file).then((blob) => {
-                setFiles(blob);
+    console.log(fileList)
+    const handleUploadAll = async () => {
+        const formData = new FormData();
+        fileList.forEach((file) => {
+            formData.append('file', file);
+        });
+        setLoading(true)
+        try {
+            const response = await axiosInstance.patch(`${BASE_URL}/global/banner`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
-        }
 
-        return false; // Không tự động upload, vì chúng ta sẽ xử lý file sau khi chuyển đổi
-    };
-
-    const convertToBlob = (file) => new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            resolve(new Blob([reader.result], { type: file.type }));
-        };
-        reader.readAsArrayBuffer(file);
-    });
-
-    const handleUpload = async () => {
-        if (files) {
-            try {
-                setLoadingImg(true);
-
-                // Sử dụng axios hoặc phương thức gửi file của bạn để gửi file lên server
-                const formData = new FormData();
-                formData.append('file', files[0]); // Chắc chắn chỉ lấy một file
-
-                try {
-                    const response = await axiosInstance.patch(`${BASE_URL}/global/banner`, {}, formData);
-                    console.log('Upload success:', response);
-                } catch (error) {
-                    console.error('Error uploading file:', error);
-                    if (error.response) {
-                        console.error('Server error details:', error.response.data);
-                    }
-                }
-
-                setLoadingImg(false);
-            } catch (error) {
-                console.error('Error uploading file:', error);
-                setLoadingImg(false);
-                message.error('File upload failed.');
-            }
+            setLoading(false)
+            message.success(response.data.message)
+            setOpenEditBanner(true)
+            console.log(response);
+        } catch (error) {
+            setLoading(false)
+            setOpenEditBanner(true)
+            console.error('Error uploading files:', error);
         }
     };
 
+    const handleFileInputChange = (event) => {
+        const { files } = event.target;
+        setFileList(Array.from(files));
+    };
 
 
-    const uploadButton = (
-        <div>
-            {loadingImg ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-    );
     useEffect(() => {
         axiosInstance
             .get(`${BASE_URL}/global/boost-price`,)
@@ -313,31 +273,34 @@ export default function ListProvider() {
                                 <span className='font-medium text-xl'>
                                     Banner
                                 </span>
-                                <button type='button' className=' bg-blue-600 text-white px-4 rounded-md flex  items-center gap-1'>
-                                    <FiEdit />
-                                    Edit
-                                </button>
+                                {
+                                    openEditBanner ? (
+                                        <button type='button' onClick={handleOpenEditBanner} className=' bg-blue-600 text-white px-4 rounded-md flex  items-center gap-1'>
+                                            <FiEdit />
+                                            Edit
+                                        </button>
+                                    ) : (
+                                        <button type='button' onClick={handleUploadAll} className=' bg-yellow-600 text-white px-4 rounded-md flex  items-center gap-1'>
+                                            <FiEdit />
+                                            Save
+                                        </button>
+                                    )
+                                }
                             </div>
                             <hr />
                             <div className='p-4'>
-                                <img src={banner} alt="dont find" className='h-56 object-cover rounded-lg' />
-                                <Upload
-                                    name="avatar"
-                                    listType="picture-card"
-                                    className="avatar-uploader"
-                                    showUploadList={false}
-                                    onChange={handleChange}
-                                    beforeUpload={beforeUpload}
-                                >
-                                    {files ? (
-                                        <img src={URL.createObjectURL(files)} alt="avatar" style={{ width: '100%' }} />
-                                    ) : (
-                                        uploadButton
-                                    )}
-                                </Upload>
-                                <button type="button" onClick={handleUpload} disabled={!files}>
-                                    Upload to Server
-                                </button>
+                                {openEditBanner ? (
+                                    <img src={banner} alt="dont find" className='h-56 object-cover rounded-lg' />
+
+                                ) : (
+                                    <div className='h-56 flex flex-col items-center  justify-center'>
+                                        <div>
+                                            <input type="file" multiple onChange={handleFileInputChange} />
+
+                                        </div>
+                                    </div>
+                                )}
+
                             </div>
                         </div>
                     </div>
