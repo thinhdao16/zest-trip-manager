@@ -61,11 +61,11 @@ export default function UserTableRow({
   const currentStatus = statusMapping[phone_number];
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
+      <TableRow hover tabIndex={-1} role="checkbox" selected={selected} >
 
 
-        <TableCell component="th" scope="row" padding="none">
-          <Stack direction="row" alignItems="center" spacing={2}>
+        <TableCell component="th" scope="row" padding="none" >
+          <Stack direction="row" alignItems="center" spacing={2} className='pl-4'>
             <Avatar alt={full_name} src={avatarUrl} />
             <Typography variant="subtitle2" noWrap>
               {full_name || "<No-Name>"}

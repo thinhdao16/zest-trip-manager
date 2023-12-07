@@ -105,7 +105,6 @@ export default function UserPage() {
     comparator: getComparator(order, orderBy),
     filterName,
   });
-
   const handleOpen = () => setOpen(true);
   const notFound = !dataFiltered.length && !!filterName;
 

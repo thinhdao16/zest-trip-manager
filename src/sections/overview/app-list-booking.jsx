@@ -91,7 +91,6 @@ export function ListBooking() {
       return saveDateChartChoose;
     }
 
-    // Return a default value or handle other cases if needed
     return null;
   }
 
@@ -421,7 +420,7 @@ export function ListBooking() {
                                     dataVoucher?.label?.start,
                                     dataVoucher?.label?.end
                                   )?.uniqueProviders?.length -
-                                    1 && <hr className="mt-4" />}
+                                  1 && <hr className="mt-4" />}
                               </div>
                             ))
                           ) : (

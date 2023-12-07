@@ -15,6 +15,8 @@ const LazyAccProvider = lazy(() => import('src/pages/provider/accprovider/acc-pr
 const LazyListProvider = lazy(() => import('src/pages/provider/listprovider/list-provider'));
 const LazyListProviderHaveTour = lazy(() => import('src/pages/provider/listtourprovider/list-provider'));
 
+const LazyListProviderWithDraw = lazy(() => import('src/pages/listtransactionwithdraw/list-provider-withdraw'));
+
 const LazyReportProvider = lazy(() => import('src/pages/provider/reported/Reported'));
 const LazyListReview = lazy(() => import('src/pages/review/list-review/ListReview'));
 const LazyListBookingDetail = lazy(() =>
@@ -68,6 +70,8 @@ export default function Router() {
         { path: 'report-provider', element: <ProtectedRoute element={<LazyReportProvider />} /> },
         { path: 'list-review', element: <ProtectedRoute element={<LazyListReview />} /> },
         { path: 'global', element: <ProtectedRoute element={<LazyGlobal />} /> },
+        { path: 'list-provider-withdraw', element: <ProtectedRoute element={<LazyListProviderWithDraw />} /> },
+
         { path: 'list-provider-tour', element: <ProtectedRoute element={<LazyListProviderHaveTour />} /> },
 
         {

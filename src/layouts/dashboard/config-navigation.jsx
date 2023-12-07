@@ -1,5 +1,6 @@
+import { SlDrawer } from "react-icons/sl";
 import { AiOutlineGlobal } from 'react-icons/ai';
-import { MdOutlineRateReview } from "react-icons/md";
+import { MdOutlineTour, MdOutlineRateReview } from "react-icons/md";
 
 import SvgColor from 'src/components/svg-color';
 
@@ -34,8 +35,9 @@ const navConfig = [
   {
     title: 'Tour Provider',
     path: '/list-provider-tour',
-    icon: <AiOutlineGlobal className='w-6 h-6' />,
+    icon: <MdOutlineTour className='w-6 h-6' />,
   },
+
 ];
 export const navConfigStaff = [
   {
@@ -70,7 +72,11 @@ export const navConfigManagerProvider = [
     path: '/report-provider',
     icon: icon('ic_user'),
   },
-
+  {
+    title: 'Provider Withdraw',
+    path: '/list-provider-withdraw',
+    icon: <SlDrawer className='w-6 h-6' />,
+  },
 ];
 
 export default navConfig;

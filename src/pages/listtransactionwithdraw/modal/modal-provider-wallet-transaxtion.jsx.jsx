@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { message } from 'antd';
 import { Link } from 'react-router-dom';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
@@ -24,53 +25,36 @@ const style = {
     zIndex: 2
 };
 // eslint-disable-next-line react/prop-types
-export default function ModalListProvider({ openModal, setOpenModal, idProvider }) {
-
+export default function ModalProviderWalletTransaction({ openModal, setOpenModal, idProvider, data }) {
+    console.log(data)
+    // eslint-disable-next-line react/prop-types
+    const dataProvider = data?.UserWallet?.user?.Providers
     const { setLoadingAccProvider } = React.useContext(DataContext)
     const [loading, setLoading] = React.useState(false)
 
     const handleCloseCancel = () => setOpenModal(false);
     const handleCloseUpdate = (field) => {
         setLoading(true);
-
         axiosInstance
-            .put(`${BASE_URL}/staff/provider-management/providers/${idProvider}`, {
-                status: field,
-                reason: "abc"
-            })
+            // eslint-disable-next-line react/prop-types
+            .post(`${BASE_URL}/user-wallet/withdraw/${field}/${data?.id}`)
             .then((response) => {
                 console.log(response)
-                setDataProvider(response.data.data);
                 setLoading(false);
                 setOpenModal(false)
                 setLoadingAccProvider((prev) => !prev)
+                message.success("Wallet was successfully")
             })
             .catch((error) => {
                 console.error('Error:', error);
                 setLoading(false);
+                message.error("Wallet fail")
             });
     };
 
-    const [dataProvider, setDataProvider] = React.useState()
-    const role = React.useMemo(() => {
-        const roleId = localStorage.getItem("role")
-        return roleId
-    }, [])
 
-    React.useEffect(() => {
-        setLoading(true);
-        axiosInstance
-            .get(`${BASE_URL}/staff/provider-management/providers/${idProvider}`, {
-            })
-            .then((response) => {
-                setDataProvider(response.data.data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                setLoading(false);
-            });
-    }, [idProvider]);
+
+
     return (
         <div>
             {loading ? (
@@ -251,44 +235,26 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                         className="flex gap-5 absolute bottom-0 bg-white w-full justify-center p-4 rounded-b-xl border border-solid border-gray-200"
                                         style={{ marginBottom: "-1px    " }}
                                     >
-                                        {dataProvider?.status !== 'REJECT' && dataProvider?.status !== 'ACCEPTED' && (
-                                            <button
-                                                className="px-6 py-2 bg-gray-300 rounded-lg text-gray-600 font-medium"
-                                                type='button'
-                                                onClick={() => handleCloseUpdate("REJECT")}
-                                            >
-                                                Reject
-                                            </button>
-                                        )}
-                                        {dataProvider?.status !== 'ACCEPTED' && (
-                                            <button
-                                                className="px-6 py-2 bg-blue-600 rounded-lg text-white font-medium"
-                                                type='button'
 
-                                                onClick={() => handleCloseUpdate("ACCEPTED")}
-                                            >
-                                                Accept
-                                            </button>)}
-                                        {(dataProvider?.status !== 'BANNED' || dataProvider?.status !== 'PROGESSING') && dataProvider?.status === 'ACCEPTED' && (
-                                            <button
-                                                className="px-6 py-2 bg-yellow-300 rounded-lg text-yellow-900 font-medium"
-                                                type='button'
-                                                onClick={() => handleCloseUpdate("BANNED")}
-                                            >
-                                                Ban
-                                            </button>
-                                        )}
 
-                                        {(dataProvider?.status !== 'DISABLED' || role !== "Staff") && dataProvider?.status !== 'PROCESSING' && dataProvider?.status !== 'REJECT' && (
-                                            <button
-                                                className="px-6 py-2 bg-red-300 rounded-lg text-red-900 font-medium"
-                                                type='button'
 
-                                                onClick={() => handleCloseUpdate("DISABLED")}
-                                            >
-                                                Disable
-                                            </button>
-                                        )}
+
+                                        <button
+                                            className="px-6 py-2 bg-red-300 rounded-lg text-red-900 font-medium"
+                                            type='button'
+
+                                            onClick={() => handleCloseUpdate("reject")}
+                                        >
+                                            Reject
+                                        </button>
+                                        <button
+                                            className="px-6 py-2 bg-blue-600 rounded-lg text-white font-medium"
+                                            type='button'
+
+                                            onClick={() => handleCloseUpdate("accept")}
+                                        >
+                                            Accept
+                                        </button>
                                     </div>
                                 </div>
 
