@@ -206,7 +206,6 @@ export function ListBooking() {
     console.log(tours);
     return tours?.filter((tour) => tour?.BookingOnTour?.Provider?.id === providerId);
   }
-  console.log(dataBooking);
   return (
     <div className="h-full bg-main overflow-auto global-scrollbar rounded-lg w-full">
       <div className="container mx-auto py-4 px-8">

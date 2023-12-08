@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { Calendar } from 'react-multi-date-picker';
 // import { faker } from '@faker-js/faker';
 import { useState, useEffect, useContext } from 'react';
 
@@ -8,8 +9,6 @@ import { LicenseInfo } from '@mui/x-license-pro';
 import Typography from '@mui/material/Typography';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { StaticDateRangePicker } from '@mui/x-date-pickers-pro/StaticDateRangePicker';
-import { SingleInputDateRangeField } from '@mui/x-date-pickers-pro/SingleInputDateRangeField';
 
 import { DataContext } from 'src/store/datacontext/DataContext';
 // eslint-disable-next-line import/no-named-as-default
@@ -155,7 +154,11 @@ export default function AppView() {
   }, [setBookingChart, setUser]);
 
   const handleDateChange = (newDateRange) => {
-    const formattedDateRange = newDateRange.map((date) => dayjs(date).format('YYYY-MM-DD'));
+    const formattedDateRange = newDateRange?.map((date) => {
+      const dayjsDate = dayjs(date);
+      return dayjsDate.isValid() ? dayjsDate.format('YYYY-MM-DD') : null;
+    });
+
     const [start, end] = formattedDateRange;
     setSelectedDateRange(newDateRange);
     setSaveFormattedLabels([{ start, end }]);
@@ -164,6 +167,7 @@ export default function AppView() {
     setSaveDateChartChoose([{ start, end }]);
     setFieldSaveDateChartChoose('filter');
   };
+
   const handleChartAll = () => {
     setSaveFormattedLabels([...formattedLabels]);
     setSaveFormattedLabelDayMonth([...formattedLabelDayMonth]);
@@ -235,26 +239,35 @@ export default function AppView() {
           />
         </Grid>
         <Grid xs={12} md={6} lg={4}>
-          <div className="bg-white flex flex-col justify-center">
+          <div className=" flex flex-col justify-center">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <div className="custom-date-range-picker">
-                <StaticDateRangePicker
+                {/* <StaticDateRangePicker
                   slots={{ field: SingleInputDateRangeField }}
                   value={selectedDateRange}
                   onChange={handleDateChange}
-                />
+                /> */}
 
               </div>
             </LocalizationProvider>
-            <div className="text-center">
-              <button
-                className="mb-2 p-2 px-2 border border-blue-300 rounded-lg"
-                type="button"
-                onClick={() => handleChartAll()}
-              >
-                Clear
-              </button>
-            </div>
+            <Calendar
+              className='py-8 px-5 shadow-none custommer-calendar-chart'
+              numberOfMonths={1}
+              value={selectedDateRange}
+              onChange={handleDateChange}
+              range
+            >
+              <div className="text-center">
+                <button
+                  className=" p-2 px-2 mt-4 border border-blue-300 rounded-lg"
+                  type="button"
+                  onClick={() => handleChartAll()}
+                >
+                  Clear
+                </button>
+              </div>
+            </Calendar>
+
           </div>
         </Grid>
         <ListBooking />

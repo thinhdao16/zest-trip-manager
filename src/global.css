@@ -31,7 +31,17 @@
 .custom-date-range-picker .DateRangePicker-logoContainer {
   display: none;
 }
-.custom-date-range-picker .MuiDialogActions-root{
+.custom-date-range-picker .MuiDialogActions-root {
   display: none;
+}
+
+.custommer-calendar-chart {
+  box-shadow:
+    0 0 2px 0 rgba(145, 158, 171, 0.08),
+    0 12px 24px -4px rgba(145, 158, 171, 0.08) !important;
+  border-radius: 15px !important;
+}
+.custommer-calendar-chart .rmdp-day {
+  margin: 5px !important;
 }
 /*end*/
