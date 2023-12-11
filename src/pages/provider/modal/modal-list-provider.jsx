@@ -52,10 +52,7 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
     };
 
     const [dataProvider, setDataProvider] = React.useState()
-    const role = React.useMemo(() => {
-        const roleId = localStorage.getItem("role")
-        return roleId
-    }, [])
+
 
     React.useEffect(() => {
         setLoading(true);
@@ -279,16 +276,7 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                             </button>
                                         )}
 
-                                        {(dataProvider?.status !== 'DISABLED' || role !== "Staff") && dataProvider?.status !== 'PROCESSING' && dataProvider?.status !== 'REJECT' && (
-                                            <button
-                                                className="px-6 py-2 bg-red-300 rounded-lg text-red-900 font-medium"
-                                                type='button'
 
-                                                onClick={() => handleCloseUpdate("DISABLED")}
-                                            >
-                                                Disable
-                                            </button>
-                                        )}
                                     </div>
                                 </div>
 

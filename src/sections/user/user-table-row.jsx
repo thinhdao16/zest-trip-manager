@@ -108,12 +108,12 @@ export default function UserTableRow({
           sx: { width: 140 },
         }}
       >
-        {status !== 'SUSPENDED' && (
+        {/* {status !== 'SUSPENDED' && (
           <MenuItem onClick={() => handleEditUser({ data, status: "SUSPENDED" })}>
             <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
             Suspended
           </MenuItem>
-        )}
+        )} */}
         {status !== 'BANNED' && (
           <MenuItem onClick={() => handleEditUser({ data, status: "BANNED" })} sx={{ color: 'error.main' }}>
             <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
