@@ -28,6 +28,13 @@ export default function AppView() {
   } = useContext(DataContext);
   const [selectedDateRange, setSelectedDateRange] = useState([null, null]);
 
+  const filteredBookings = bookingChart?.filter(
+    (booking) =>
+      booking.status !== "REJECT" &&
+      booking.status !== "PENDING" &&
+      booking.status !== "0"
+  );
+
   function calculateTotalByDay(bookings, targetDay, propertyName, field, startDate, endDate) {
     const totalByDay = {};
     const totalByMonth = {};
@@ -190,14 +197,14 @@ export default function AppView() {
               labels: saveFormattedLabelDayMonth,
               series: [
                 {
-                  name: 'Paid price',
+                  name: "Provider revieced",
                   type: 'column',
                   fill: 'solid',
                   data: saveFormattedLabels.map((day) =>
                     calculateTotalByDay(
-                      bookingChart,
+                      filteredBookings,
                       '',
-                      'paid_price',
+                      'provider_receive',
                       'chart_week',
                       day && day.start,
                       day && day.end
@@ -210,7 +217,7 @@ export default function AppView() {
                   fill: 'gradient',
                   data: saveFormattedLabels.map((day) =>
                     calculateTotalByDay(
-                      bookingChart,
+                      filteredBookings,
                       '',
                       'original_price',
                       'chart_week',
@@ -225,7 +232,7 @@ export default function AppView() {
                   fill: 'solid',
                   data: saveFormattedLabels.map((day) =>
                     calculateTotalByDay(
-                      bookingChart,
+                      filteredBookings,
                       '',
                       'refund_ammount',
                       'chart_week',

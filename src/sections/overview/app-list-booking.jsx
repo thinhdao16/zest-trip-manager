@@ -117,7 +117,7 @@ export function ListBooking() {
     });
   const dataBooking = calculateChartData(
     filteredBookings,
-    'paid_price',
+    'provider_receive',
     'original_price',
     'refund_ammount'
   );
@@ -220,7 +220,7 @@ export function ListBooking() {
                 <span className="font-medium">Paid original</span>
               </div>
               <div className="">
-                <span className="font-medium">Paid price</span>
+                <span className="font-medium">Provider recieved</span>
               </div>
               <div className="">
                 <span className="font-medium">Refund amount</span>

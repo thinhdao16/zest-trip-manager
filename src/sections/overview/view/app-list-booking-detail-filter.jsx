@@ -114,7 +114,7 @@ function ListPaymentFilterDate() {
                   <span className="font-medium">Paid original</span>
                 </div>
                 <div className="">
-                  <span className="font-medium">Paid price</span>
+                  <span className="font-medium">Provider received</span>
                 </div>
                 <div className="">
                   <span className="font-medium">Refund amount</span>
@@ -165,7 +165,7 @@ function ListPaymentFilterDate() {
                         <div className=" flex items-center ">
                           <div className="flex flex-wrap gap-3">
                             <span className="">
-                              {formatNumber(parseInt(dataVoucher?.paid_price || {}, 10))}
+                              {formatNumber(parseInt(dataVoucher?.provider_receive || {}, 10))}
                             </span>
                           </div>
                         </div>
