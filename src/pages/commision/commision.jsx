@@ -34,7 +34,7 @@ export default function ListProvider() {
     const [openEditCommission, setOpenEditCommission] = useState(true)
 
     const [openEditBanner, setOpenEditBanner] = useState(true)
-
+    const [reloadBanner, setReloadBanner] = useState(null)
     const [fileList, setFileList] = useState([]);
 
     const formatNumberWithCommas = (value) => {
@@ -64,12 +64,15 @@ export default function ListProvider() {
                 price: parseInt(editPromotion, 10)
             }).then((response) => {
                 console.log(response)
+                message.success("Edit promotion successfully")
+
                 setLoading(false);
                 setOpenEditPromotion(true);
             }).catch(
                 (error) => {
                     console.log(error)
                     setLoading(false);
+                    message?.error(error?.response?.data?.message)
                     setOpenEditPromotion(true);
                 }
             )
@@ -79,44 +82,50 @@ export default function ListProvider() {
         setLoading(true)
         axiosInstance.patch(`${BASE_URL}/global/commission-rate`,
             {
-                commision: parseInt(editCommission, 10) / 100
+                commission: parseInt(editCommission, 10) / 100
             }).then((response) => {
                 console.log(response)
+                message.success("Edit commission successfully")
                 setLoading(false);
                 setOpenEditCommission(true);
             }).catch(
                 (error) => {
                     console.log(error)
+                    message?.error(error?.response?.data?.message)
                     setLoading(false);
                     setOpenEditCommission(true);
                 }
             )
     }
 
-    console.log(fileList)
+    console.log(parseInt(editCommission, 10) / 100)
     const handleUploadAll = async () => {
-        const formData = new FormData();
-        fileList.forEach((file) => {
-            formData.append('file', file);
-        });
-        setLoading(true)
+        setLoading(true);
         try {
+            const formData = new FormData();
+            fileList.forEach((file) => {
+                formData.append('file', file);
+            });
+
             const response = await axiosInstance.patch(`${BASE_URL}/global/banner`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
 
-            setLoading(false)
-            message.success(response.data.message)
-            setOpenEditBanner(true)
+            message.success(response.data.message);
             console.log(response);
+            setReloadBanner((prev) => !prev)
+
         } catch (error) {
-            setLoading(false)
-            setOpenEditBanner(true)
             console.error('Error uploading files:', error);
+        } finally {
+            setLoading(false);
+            setOpenEditBanner(true);
+            setReloadBanner((prev) => !prev)
         }
     };
+
 
     const handleFileInputChange = (event) => {
         const { files } = event.target;
@@ -157,7 +166,7 @@ export default function ListProvider() {
             });
         setEditPromotion(promotion)
         setEditCommission(commision)
-    }, [commision, loadingAccProvider, promotion, setBanner, setCommision, setPromotion, loading]);
+    }, [commision, loadingAccProvider, promotion, setBanner, setCommision, setPromotion, loading, reloadBanner]);
 
     return (
         <>
@@ -255,9 +264,9 @@ export default function ListProvider() {
                                         </span>
                                     ) : (
                                         <>
-                                            <input type="number" min={5} max={100} className='text-3xl font-medium p-0 w-10 border-b border-0 border-black focus:outline-none 
+                                            <input type="number" className='text-3xl font-medium p-0 w-10 border-b border-0 border-black focus:outline-none 
                                     text-end'
-                                                value={formatNumberWithCommas(parseInt(editCommission, 10) * 100)} onChange={(e) => {
+                                                value={parseInt(editCommission, 10)} onChange={(e) => {
                                                     setEditCommission(e.target.value)
                                                 }} /> <span className='text-3xl font-medium'>%</span>
                                         </>

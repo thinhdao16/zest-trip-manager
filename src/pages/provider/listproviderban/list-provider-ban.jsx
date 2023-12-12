@@ -28,7 +28,7 @@ import { emptyRows, applyFilter, getComparator } from './utils';
 
 // ----------------------------------------------------------------------
 
-export default function ListProvider() {
+export default function ListProviderBan() {
   const { loadingAccProvider } = useContext(DataContext);
 
   const [page, setPage] = useState(0);
@@ -101,7 +101,7 @@ export default function ListProvider() {
     filterName,
   });
   console.log(dataFiltered)
-  const dataFilterNotApp = dataFiltered?.filter((list) => list?.status === "ACCEPTED")
+  const dataFilterNotApp = dataFiltered?.filter((list) => list?.status === "BANNED")
   const notFound = !dataFilterNotApp.length && !!filterName;
 
   useEffect(() => {

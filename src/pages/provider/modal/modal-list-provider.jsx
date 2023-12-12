@@ -6,11 +6,15 @@ import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
 import Backdrop from '@mui/material/Backdrop';
+import { Slide, Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 
 import LoadingModal from 'src/loading/LoadingModal';
 import { DataContext } from 'src/store/datacontext/DataContext';
 // eslint-disable-next-line import/no-named-as-default
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
+
+// eslint-disable-next-line react/jsx-no-undef
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 const style = {
     position: 'absolute',
@@ -28,7 +32,18 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
 
     const { setLoadingAccProvider } = React.useContext(DataContext)
     const [loading, setLoading] = React.useState(false)
+    const [open, setOpen] = React.useState(false);
+    const [reason, setReason] = React.useState("")
+    const [fieldStatus, setFieldStatus] = React.useState("")
 
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleClickOpen = (data) => {
+        setFieldStatus(data)
+        setOpen(true);
+    };
     const handleCloseCancel = () => setOpenModal(false);
     const handleCloseUpdate = (field) => {
         setLoading(true);
@@ -244,15 +259,36 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                             </div>
                                         </div>
                                     </div>
+
+                                    <Dialog
+                                        open={open}
+                                        TransitionComponent={Transition}
+                                        keepMounted
+                                        aria-describedby="alert-dialog-slide-description"
+                                    >
+                                        <span className='font-medium text-xl mt-4 ml-4'>Reject Reason</span>
+                                        <DialogContent>
+                                            <textarea type="text" className='border border-gray-300 rounded-lg h-40 p-2' value={reason} onChange={(e) => setReason(e.target.value)} />
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={handleClose}
+                                                color='error'>Cancel</Button>
+                                            <Button
+                                                onClick={() => handleCloseUpdate(fieldStatus)}
+                                            >Continue</Button>
+                                        </DialogActions>
+                                    </Dialog>
+
+
                                     <div
                                         className="flex gap-5 absolute bottom-0 bg-white w-full justify-center p-4 rounded-b-xl border border-solid border-gray-200"
-                                        style={{ marginBottom: "-1px    " }}
+                                        style={{ marginBottom: "-1px" }}
                                     >
-                                        {dataProvider?.status !== 'REJECT' && dataProvider?.status !== 'ACCEPTED' && (
+                                        {dataProvider?.status !== 'REJECT' && dataProvider?.status !== 'ACCEPTED' && dataProvider?.status !== 'BANNED' && (
                                             <button
                                                 className="px-6 py-2 bg-gray-300 rounded-lg text-gray-600 font-medium"
                                                 type='button'
-                                                onClick={() => handleCloseUpdate("REJECT")}
+                                                onClick={() => handleClickOpen("REJECT")}
                                             >
                                                 Reject
                                             </button>
@@ -262,7 +298,7 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                                 className="px-6 py-2 bg-blue-600 rounded-lg text-white font-medium"
                                                 type='button'
 
-                                                onClick={() => handleCloseUpdate("ACCEPTED")}
+                                                onClick={() => handleClickOpen("ACCEPTED")}
                                             >
                                                 Accept
                                             </button>)}
@@ -270,7 +306,7 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                             <button
                                                 className="px-6 py-2 bg-yellow-300 rounded-lg text-yellow-900 font-medium"
                                                 type='button'
-                                                onClick={() => handleCloseUpdate("BANNED")}
+                                                onClick={() => handleClickOpen("BANNED")}
                                             >
                                                 Ban
                                             </button>

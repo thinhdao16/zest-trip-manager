@@ -264,7 +264,7 @@ export default function ModalAccProvider({ openModal, setOpenModal, idProvider }
                                         keepMounted
                                         aria-describedby="alert-dialog-slide-description"
                                     >
-                                        <span className='font-medium text-xl mt-4 ml-4'>Reason reject</span>
+                                        <span className='font-medium text-xl mt-4 ml-4'>Reject Reason</span>
                                         <DialogContent>
                                             <textarea type="text" className='border border-gray-300 rounded-lg h-40 p-2' value={reason} onChange={(e) => setReason(e.target.value)} />
                                         </DialogContent>

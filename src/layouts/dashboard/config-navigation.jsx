@@ -58,13 +58,22 @@ export const navConfigStaff = [
 ];
 export const navConfigManagerProvider = [
   {
-    title: 'List',
+    title: 'Accept',
     path: '/list-provider',
     icon: icon('ic_user'),
   },
   {
-    title: 'Approval',
+    title: 'Processing',
     path: '/acc-provider',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'Ban',
+    path: '/acc-provider-ban',
+    icon: icon('ic_user'),
+  }, {
+    title: 'Reject',
+    path: '/acc-provider-reject',
     icon: icon('ic_user'),
   },
   {

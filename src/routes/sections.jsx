@@ -13,6 +13,10 @@ const LazyBlogPage = lazy(() => import('src/pages/blog'));
 const LazyPage404 = lazy(() => import('src/pages/page-not-found'));
 const LazyAccProvider = lazy(() => import('src/pages/provider/accprovider/acc-provider'));
 const LazyListProvider = lazy(() => import('src/pages/provider/listprovider/list-provider'));
+const LazyListProviderBan = lazy(() => import('src/pages/provider/listproviderban/list-provider-ban'));
+const LazyListProviderReject = lazy(() => import('src/pages/provider/listproviderreject/list-provider-reject'));
+
+
 const LazyListProviderHaveTour = lazy(() => import('src/pages/provider/listtourprovider/list-provider'));
 
 const LazyListProviderWithDraw = lazy(() => import('src/pages/listtransactionwithdraw/list-provider-withdraw'));
@@ -67,6 +71,10 @@ export default function Router() {
         { path: 'blog', element: <LazyBlogPage /> },
         { path: 'acc-provider', element: <ProtectedRoute element={<LazyAccProvider />} /> },
         { path: 'list-provider', element: <ProtectedRoute element={<LazyListProvider />} /> },
+        { path: 'acc-provider-ban', element: <ProtectedRoute element={<LazyListProviderBan />} /> },
+        { path: 'acc-provider-reject', element: <ProtectedRoute element={<LazyListProviderReject />} /> },
+
+
         { path: 'report-provider', element: <ProtectedRoute element={<LazyReportProvider />} /> },
         { path: 'list-review', element: <ProtectedRoute element={<LazyListReview />} /> },
         { path: 'global', element: <ProtectedRoute element={<LazyGlobal />} /> },
