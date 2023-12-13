@@ -178,7 +178,7 @@ export function ListBooking() {
     axiosInstance
       .get(`${BASE_URL}/tour`, {
         params: {
-          limit: '2000',
+          limit: '150',
         },
       })
       .then((response) => {

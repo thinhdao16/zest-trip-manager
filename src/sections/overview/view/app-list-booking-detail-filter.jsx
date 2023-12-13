@@ -50,7 +50,7 @@ function ListPaymentFilterDate() {
   useEffect(() => {
     axiosInstance
       .post(`${BASE_URL}/booking/owned`, {
-        select: '2000',
+        select: '1000',
       })
       .then((response) => {
         setBookingChart(response.data.data);
