@@ -122,7 +122,7 @@ function Payment() {
   useEffect(() => {
     axiosInstance
       .post(`${BASE_URL}/booking/owned`, {
-        select: '800',
+        select: '500',
       })
       .then((response) => {
         setBookingChart(response.data.data);

@@ -12,7 +12,6 @@ import LoadingModal from 'src/loading/LoadingModal';
 import { DataContext } from 'src/store/datacontext/DataContext';
 // eslint-disable-next-line import/no-named-as-default
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
-
 // eslint-disable-next-line react/jsx-no-undef
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -83,6 +82,10 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                 setLoading(false);
             });
     }, [idProvider]);
+
+
+
+
     return (
         <div>
             {loading ? (
@@ -215,7 +218,10 @@ export default function ModalListProvider({ openModal, setOpenModal, idProvider 
                                                     <a
                                                         className='text-blue-500'
                                                         href={dataProvider?.business_license}
-                                                    // onClick={() => FileDownload(dataProvider?.business_license, ` registration`)}
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            window.open(dataProvider?.business_license, '_blank');
+                                                        }}
                                                     >
                                                         Download File
                                                     </a>

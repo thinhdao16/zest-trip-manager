@@ -216,7 +216,10 @@ export default function ModalAccProvider({ openModal, setOpenModal, idProvider }
                                                     <a
                                                         className='text-blue-500'
                                                         href={dataProvider?.business_license}
-                                                    // onClick={() => FileDownload(dataProvider?.business_license, ` registration`)}
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            window.open(dataProvider?.business_license, '_blank');
+                                                        }}
                                                     >
                                                         Download File
                                                     </a>
