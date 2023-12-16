@@ -235,31 +235,33 @@ export default function ModalProviderWalletTransaction({ openModal, setOpenModal
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        className="flex gap-5 absolute bottom-0 bg-white w-full justify-center p-4 rounded-b-xl border border-solid border-gray-200"
-                                        style={{ marginBottom: "-1px    " }}
-                                    >
+                                    {
+                                        // eslint-disable-next-line react/prop-types
+                                        data?.status === "PENDING" && (
+                                            <div
+                                                className="flex gap-5 absolute bottom-0 bg-white w-full justify-center p-4 rounded-b-xl border border-solid border-gray-200"
+                                                style={{ marginBottom: "-1px" }}
+                                            >
+                                                <button
+                                                    className="px-6 py-2 bg-red-300 rounded-lg text-red-900 font-medium"
+                                                    type='button'
 
+                                                    onClick={() => handleCloseUpdate("reject")}
+                                                >
+                                                    Reject
+                                                </button>
+                                                <button
+                                                    className="px-6 py-2 bg-blue-600 rounded-lg text-white font-medium"
+                                                    type='button'
 
+                                                    onClick={() => handleCloseUpdate("accept")}
+                                                >
+                                                    Accept
+                                                </button>
+                                            </div>
+                                        )
+                                    }
 
-
-                                        <button
-                                            className="px-6 py-2 bg-red-300 rounded-lg text-red-900 font-medium"
-                                            type='button'
-
-                                            onClick={() => handleCloseUpdate("reject")}
-                                        >
-                                            Reject
-                                        </button>
-                                        <button
-                                            className="px-6 py-2 bg-blue-600 rounded-lg text-white font-medium"
-                                            type='button'
-
-                                            onClick={() => handleCloseUpdate("accept")}
-                                        >
-                                            Accept
-                                        </button>
-                                    </div>
                                 </div>
 
                             </Box>

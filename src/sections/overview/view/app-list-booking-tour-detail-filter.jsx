@@ -7,6 +7,7 @@ import { useMemo, useState, useEffect, useContext } from 'react';
 
 import { Rating } from '@mui/material';
 
+import TruncatedText from 'src/utils/truncated-text';
 import { formatNumber } from 'src/utils/formatNumber';
 
 import { StatusTour } from 'src/status/tour';
@@ -18,7 +19,6 @@ import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
 function ListPaymentTourFilterDate() {
   const [expandedItems, setExpandedItems] = useState({});
   const [tour, setTour] = useState({})
-  console.log(tour)
   const { indexPid } = useParams();
   const { bookingChart, setBookingChart } = useContext(DataContext);
   const filteredBookings = bookingChart?.filter(
@@ -37,7 +37,6 @@ function ListPaymentTourFilterDate() {
       return bookedDate >= formattedStartDate && bookedDate <= formattedEndDate;
     });
   }, [filteredBookings]);
-  console.log(filteredBookingByDate);
 
   const filterBookingsByProviderId = (bookings, providerId) =>
     bookings?.filter((booking) => {
@@ -51,6 +50,20 @@ function ListPaymentTourFilterDate() {
     setExpandedItems(newExpandedItems);
   };
 
+
+  const totalProviderReceive = bookingChartPid.reduce((total, booking) => {
+    const providerReceiveAmount = parseFloat(booking.provider_receive) || 0;
+    return total + providerReceiveAmount;
+  }, 0);
+  const totalPaidOriginal = bookingChartPid.reduce((total, booking) => {
+    const providerReceiveAmount = parseFloat(booking.original_price) || 0;
+    return total + providerReceiveAmount;
+  }, 0);
+  const totalRefundAmount = bookingChartPid.reduce((total, booking) => {
+    const providerReceiveAmount = parseFloat(booking.refund_ammount) || 0;
+    return total + providerReceiveAmount;
+  }, 0);
+  console.log(totalProviderReceive, totalPaidOriginal, totalRefundAmount)
   useEffect(() => {
     axiosInstance
       .post(`${BASE_URL}/booking/owned`, {
@@ -91,29 +104,53 @@ function ListPaymentTourFilterDate() {
             </div>
           </div>
           <div />
-          <div className='flex items-center gap-3 p-4 rounded-md shadow-custom-card-mui relative'>
-            <div className='absolute top-4 right-4'>
-              <StatusTour>{tour?.status}</StatusTour>
+          <div className=' p-4 rounded-md shadow-custom-card-mui relative grid grid-cols-12'>
+            <div className="col-span-7">
+              <div className='flex items-center gap-3'>
+                <img src={tour?.tour_images?.[0]} alt="" className='w-24 h-24 object-cover rounded-md' />
+                <div className='flex flex-col'>
+                  <p className='font-medium'>
+                    <TruncatedText text={tour?.name} maxLength={58} />
+                    { }</p>
+                  <span>
+                    <TruncatedText
+                      text={`${tour?.address_name}, ${tour?.address_ward}, ${tour?.address_district}, ${tour?.address_province}, ${tour?.address_country}`}
+                      maxLength={58}
+                    />
+                  </span>
+                  <div className='flex items-center'>
+                    <RiMoneyDollarCircleLine />
+                    {formatNumber(parseInt(tour?.from_price, 10))}
+                    <TiArrowRight className='mx-2' />
+                    <RiMoneyDollarCircleLine />
+                    {formatNumber(parseInt(tour?.to_price, 10))}
 
-            </div>
-            <img src={tour?.tour_images?.[0]} alt="" className='w-24 h-24 object-cover rounded-md' />
-            <div className='flex flex-col'>
-              <p className='font-medium'>{tour?.name}</p>
-              <span>
-                {tour?.address_name},{" "} {tour?.address_ward},
-                {" "} {tour?.address_district},{" "} {tour?.address_province},
-                {" "} {tour?.address_country}
-              </span>
-              <div className='flex items-center'>
-                <RiMoneyDollarCircleLine />
-                {formatNumber(parseInt(tour?.from_price, 10))}
-                <TiArrowRight className='mx-2' />
-                <RiMoneyDollarCircleLine />
-                {formatNumber(parseInt(tour?.to_price, 10))}
 
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <Rating name="half-rating-read" defaultValue={tour?.average_rating} precision={0.5} readOnly />
 
+                    <StatusTour>{tour?.status}</StatusTour>
+
+                  </div>
+                </div>
               </div>
-              <Rating name="half-rating-read" defaultValue={tour?.average_rating} precision={0.5} readOnly />
+            </div>
+            <div className="col-span-5">
+              <div className="grid grid-cols-2">
+                <div className='flex flex-col gap-2'>
+                  <span className='font-medium'>Total paid original:</span>
+                  <span className='font-medium'>Total provider received:</span>
+                  <span className='font-medium'>Total refund amount:</span>
+
+                </div>
+                <div className='flex flex-col gap-2'>
+                  <span className='ml-3'>{formatNumber(totalPaidOriginal)}</span>
+                  <span className='ml-3'>{formatNumber(totalProviderReceive)}</span>
+                  <span className='ml-3'>{formatNumber(totalRefundAmount)}</span>
+                </div>
+              </div>
+
             </div>
           </div>
           <div className="text-lg font-medium pb-2"> Payment history</div>
@@ -140,71 +177,58 @@ function ListPaymentTourFilterDate() {
 
             <div className="flex flex-col gap-2">
               {bookingChartPid?.length > 0 ? (
-                Array.isArray(bookingChartPid) &&
-                bookingChartPid?.map((dataVoucher, index) => (
-                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                  <div key={index} className="shadow-custom-card-mui bg-white rounded-lg relative">
-                    <div className=" px-4 py-6 relative ">
-                      {/* {!expandedItems[index] ? (
-                        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                (bookingChartPid)
+                  .sort((a, b) => dayjs(b.updated_at).diff(dayjs(a.updated_at)))
+                  .map((dataVoucher, index) => (
+                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                    <div key={index} className="shadow-custom-card-mui bg-white rounded-lg relative">
+                      <div className=" px-4 py-6 relative ">
+
                         <div
-                          className="absolute bottom-2 right-2 text-xs flex items-center gap-1"
+                          className="grid grid-cols-4 gap-3 "
                           onClick={() => toggleContentVisibility(index)}
                         >
-                          <span>See more</span>
-                          <AiOutlineDown />
-                        </div>
-                      ) : (
-                        <div className="absolute bottom-2 right-2 text-xs flex items-center gap-1">
-                          <span onClick={() => toggleContentVisibility(index)}>See less</span>
-                          <AiOutlineUp />
-                        </div>
-                      )} */}
-                      <div
-                        className="grid grid-cols-4 gap-3 "
-                        onClick={() => toggleContentVisibility(index)}
-                      >
-                        <div className=" flex items-center ">
-                          <div className=" flex flex-col">
-                            <span className="">{dataVoucher?.booker_email}</span>
-                            <span>{dayjs(dataVoucher?.booked_date).format('YYYY-MM-DD')}</span>
+                          <div className=" flex items-center ">
+                            <div className=" flex flex-col">
+                              <span className="">{dataVoucher?.booker_email}</span>
+                              <span>{dayjs(dataVoucher?.updated_at).format('YYYY-MM-DD')}</span>
+                            </div>
                           </div>
-                        </div>
-                        <div className=" flex items-center ">
-                          <span className="">
-                            {formatNumber(parseInt(dataVoucher?.original_price || {}, 10), 10)}
-                          </span>
-                        </div>
-                        <div className=" flex items-center ">
-                          <div className="flex flex-wrap gap-3">
+                          <div className=" flex items-center ">
                             <span className="">
-                              {formatNumber(parseInt(dataVoucher?.provider_receive || {}, 10))}
+                              {formatNumber(parseInt(dataVoucher?.original_price || {}, 10), 10)}
                             </span>
                           </div>
-                        </div>
-                        <div className=" flex items-center">
-                          <div className="flex flex-wrap gap-3">
-                            <span className="">
-                              {formatNumber(parseInt(dataVoucher?.refund_ammount || {}, 10))}
-                            </span>
+                          <div className=" flex items-center ">
+                            <div className="flex flex-wrap gap-3">
+                              <span className="">
+                                {formatNumber(parseInt(dataVoucher?.provider_receive || {}, 10))}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                        <div className=" flex items-center">
-                          {/* <StatusBooking>{dataVoucher?.status}</StatusBooking>
+                          <div className=" flex items-center">
+                            <div className="flex flex-wrap gap-3">
+                              <span className="">
+                                {formatNumber(parseInt(dataVoucher?.refund_ammount || {}, 10))}
+                              </span>
+                            </div>
+                          </div>
+                          <div className=" flex items-center">
+                            {/* <StatusBooking>{dataVoucher?.status}</StatusBooking>
                            */}
-                          <span>
-                            {/* {
+                            <span>
+                              {/* {
                               sumBookingInWeek(
                                 bookingChartPid,
                                 dataVoucher?.label?.start,
                                 dataVoucher?.label?.end
                               )?.length
                             } */}
-                          </span>
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    {/* {expandedItems[index] && (
+                      {/* {expandedItems[index] && (
                       <Fade in={expandedItems[index]} timeout={700}>
                         <div>
                           <hr className="mb-4" />
@@ -263,8 +287,8 @@ function ListPaymentTourFilterDate() {
                         </div>
                       </Fade>
                     )} */}
-                  </div>
-                ))
+                    </div>
+                  ))
               ) : (
                 <button
                   type="button"
