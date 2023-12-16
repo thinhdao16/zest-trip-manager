@@ -73,26 +73,31 @@ export function ListBooking() {
   }
 
   function calculateWeeks() {
-    if (fieldSaveDateChartChoose === 'normal') {
+    if (fieldSaveDateChartChoose === "normal") {
       const currentDate = dayjs();
       const currentDayOfWeek = currentDate.day();
-      const thisSunday = currentDate.subtract(currentDayOfWeek, 'day');
+      const thisSunday = currentDate.subtract(currentDayOfWeek, "day");
 
       const weeks = Array.from({ length: 7 }, (_, weekIndex) => {
-        const weekStart = thisSunday.subtract(weekIndex, 'week');
-        const weekEnd = weekStart.add(6, 'day');
-        return { start: weekStart.format('YYYY-MM-DD'), end: weekEnd.format('YYYY-MM-DD') };
+        const weekStart = thisSunday.subtract(weekIndex, "week");
+        const weekEnd = weekStart.add(6, "day").endOf("day"); // Use endOf('day')
+
+        return {
+          start: weekStart.format("YYYY-MM-DD"),
+          end: weekEnd.isAfter(currentDate) ? currentDate.format("YYYY-MM-DD") : weekEnd.format("YYYY-MM-DD"),
+        };
       });
 
       return weeks;
     }
 
-    if (fieldSaveDateChartChoose === 'filter') {
+    if (fieldSaveDateChartChoose === "filter") {
       return saveDateChartChoose;
     }
 
     return null;
   }
+
 
   const lableWeeks = calculateWeeks();
 

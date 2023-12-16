@@ -101,7 +101,7 @@ export default function ListProviderBan() {
     filterName,
   });
   console.log(dataFiltered)
-  const dataFilterNotApp = dataFiltered?.filter((list) => list?.status === "REJECTED")
+  const dataFilterNotApp = dataFiltered?.filter((list) => list?.status === "REJECT")
   const notFound = !dataFilterNotApp.length && !!filterName;
 
   useEffect(() => {
