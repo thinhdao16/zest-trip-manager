@@ -31,7 +31,6 @@ function Reported() {
   };
 
   function filterByTargetProviderId(arr, targetProviderId) {
-    console.log(arr);
     return arr?.filter((item) => item?.targeted_provider_id === targetProviderId);
   }
   const handleCloseMenu = () => {
@@ -69,7 +68,7 @@ function Reported() {
     const queryParams = {
       // orderBy: 'email:asc',
       // status: 'PROCESSING',
-      // select: 2,
+      // select: "40",
       // page: 1,
       // query: 'example@example.com',
     };
@@ -225,15 +224,15 @@ function Reported() {
                         <hr className="" />
                         {filterByTargetProviderId(report?.providers, dataProvider?.id)?.length >
                           0 && (
-                          <div className="p-4 bg-slate-100 grid grid-cols-4 mb-4">
-                            <span className="font-medium">Email</span>
-                            <span className="font-medium">Description</span>{' '}
-                            <span className="font-medium">type</span>{' '}
-                            <span className="font-medium">Status</span>
-                          </div>
-                        )}
+                            <div className="p-4 bg-slate-100 grid grid-cols-4 mb-4">
+                              <span className="font-medium">Email</span>
+                              <span className="font-medium">Description</span>{' '}
+                              <span className="font-medium">type</span>{' '}
+                              <span className="font-medium">Status</span>
+                            </div>
+                          )}
                         {filterByTargetProviderId(report?.providers, dataProvider?.id)?.length >
-                        0 ? (
+                          0 ? (
                           filterByTargetProviderId(
                             report?.providers,
                             dataProvider?.id
@@ -298,7 +297,7 @@ function Reported() {
                                 // eslint-disable-next-line no-unsafe-optional-chaining
                                 filterByTargetProviderId(report?.providers, dataProvider?.id)
                                   ?.length -
-                                  1 && <hr className="mt-4" />}
+                                1 && <hr className="mt-4" />}
                             </div>
                           ))
                         ) : (
