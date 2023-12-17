@@ -4,7 +4,6 @@ import { useState, useEffect, useContext } from 'react';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
@@ -17,7 +16,6 @@ import { users } from 'src/_mock/user';
 import { DataContext } from 'src/store/datacontext/DataContext';
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
 
-import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 import ModalUser from './modal-user';
@@ -105,7 +103,7 @@ export default function UserPage() {
     comparator: getComparator(order, orderBy),
     filterName,
   });
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = () => setOpen(true);s
   const notFound = !dataFiltered.length && !!filterName;
 
   const rowsPerPageOptions = generateRowsPerPageOptions(data?.length);
@@ -143,14 +141,14 @@ export default function UserPage() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Users</Typography>
 
-        <Button
+        {/* <Button
           onClick={handleOpen}
           variant="contained"
           color="inherit"
           startIcon={<Iconify icon="eva:plus-fill" />}
         >
           New User
-        </Button>
+        </Button> */}
         <ModalUser openModal={open} setOpenModal={setOpen} />
       </Stack>
 

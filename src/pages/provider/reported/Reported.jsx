@@ -3,14 +3,13 @@
 import { useState, useEffect, useContext } from 'react';
 import { AiOutlineUp, AiOutlineDown } from 'react-icons/ai';
 
-import { Fade, Popover, MenuItem, IconButton } from '@mui/material';
+import { Fade } from '@mui/material';
 
 import { DataContext } from 'src/store/datacontext/DataContext';
 // eslint-disable-next-line import/no-named-as-default
 import axiosInstance, { BASE_URL } from 'src/store/apiInterceptors';
 
 import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
 
 function Reported() {
   const { setBookingChart, setProvider, setReport, provider, report } = useContext(DataContext);
@@ -21,8 +20,8 @@ function Reported() {
   // Now, `filteredProviders` contains only items with statuses other than "PROCESSING" and "REJECT"
 
   const [expandedItems, setExpandedItems] = useState({});
-  const [open, setOpen] = useState(null);
-  const [loading, setLoading] = useState(null);
+  // const [open, setOpen] = useState(null);
+  // const [loading, setLoading] = useState(null);
 
   const toggleContentVisibility = (index) => {
     const newExpandedItems = { ...expandedItems };
@@ -33,42 +32,42 @@ function Reported() {
   function filterByTargetProviderId(arr, targetProviderId) {
     return arr?.filter((item) => item?.targeted_provider_id === targetProviderId);
   }
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
-  const handleRequest = (id, field) => {
-    console.log(id);
-    const confirmed = window.confirm('Are you sure you want to update the status?');
+  // const handleCloseMenu = () => {
+  //   setOpen(null);
+  // };
+  // const handleRequest = (id, field) => {
+  //   console.log(id);
+  //   const confirmed = window.confirm('Are you sure you want to update the status?');
 
-    if (confirmed) {
-      axiosInstance
-        .put(`${BASE_URL}/report/${id}`, {
-          status: field,
-        })
-        .then((response) => {
-          console.log(response);
-          setLoading((prev) => !prev);
-          setOpen(false);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          setOpen(false);
-        });
-    } else {
-      // The user canceled the action
-      console.log('Action canceled');
-    }
-  };
+  //   if (confirmed) {
+  //     axiosInstance
+  //       .put(`${BASE_URL}/report/${id}`, {
+  //         status: field,
+  //       })
+  //       .then((response) => {
+  //         console.log(response);
+  //         setLoading((prev) => !prev);
+  //         setOpen(false);
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error:', error);
+  //         setOpen(false);
+  //       });
+  //   } else {
+  //     // The user canceled the action
+  //     console.log('Action canceled');
+  //   }
+  // };
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
+  // const handleOpenMenu = (event) => {
+  //   setOpen(event.currentTarget);
+  // };
 
   useEffect(() => {
     const queryParams = {
       // orderBy: 'email:asc',
       // status: 'PROCESSING',
-      // select: "40",
+      select: '40',
       // page: 1,
       // query: 'example@example.com',
     };
@@ -96,7 +95,7 @@ function Reported() {
       .catch((error) => {
         console.error('Error:', error);
       });
-  }, [setBookingChart, setProvider, setReport, loading]);
+  }, [setBookingChart, setProvider, setReport]);
   const statusColors = {
     BANNED: 'warning',
     REJECT: 'error',
@@ -224,22 +223,22 @@ function Reported() {
                         <hr className="" />
                         {filterByTargetProviderId(report?.providers, dataProvider?.id)?.length >
                           0 && (
-                            <div className="p-4 bg-slate-100 grid grid-cols-4 mb-4">
-                              <span className="font-medium">Email</span>
-                              <span className="font-medium">Description</span>{' '}
-                              <span className="font-medium">type</span>{' '}
-                              <span className="font-medium">Status</span>
-                            </div>
-                          )}
+                          <div className="p-4 bg-slate-100 grid grid-cols-4 mb-4">
+                            <span className="font-medium">Email</span>
+                            <span className="font-medium">Description</span>{' '}
+                            <span className="font-medium">type</span>{' '}
+                            <span className="font-medium">Status</span>
+                          </div>
+                        )}
                         {filterByTargetProviderId(report?.providers, dataProvider?.id)?.length >
-                          0 ? (
+                        0 ? (
                           filterByTargetProviderId(
                             report?.providers,
                             dataProvider?.id
                             // eslint-disable-next-line no-shadow
                           )?.map((dataBookingInWeek, index) => (
                             <div className=" px-4  mb-4 py-1  relative " key={index}>
-                              <div className="absolute top-0 right-2">
+                              {/* <div className="absolute top-0 right-2">
                                 <IconButton onClick={(e) => handleOpenMenu(e)}>
                                   <Iconify icon="eva:more-vertical-fill" />
                                 </IconButton>
@@ -271,7 +270,7 @@ function Reported() {
                                   <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
                                   Reject
                                 </MenuItem>
-                              </Popover>
+                              </Popover> */}
                               <div className="grid grid-cols-4">
                                 <div>
                                   <span>{dataBookingInWeek?.reporter?.email}</span>
@@ -297,7 +296,7 @@ function Reported() {
                                 // eslint-disable-next-line no-unsafe-optional-chaining
                                 filterByTargetProviderId(report?.providers, dataProvider?.id)
                                   ?.length -
-                                1 && <hr className="mt-4" />}
+                                  1 && <hr className="mt-4" />}
                             </div>
                           ))
                         ) : (

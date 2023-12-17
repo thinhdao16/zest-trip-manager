@@ -1,8 +1,8 @@
 // ----------------------------------------------------------------------
 
 export const account = {
-  displayName: 'Jaydon Frankie',
-  email: 'demo@ZestTravels.cc',
+  displayName: 'Admin Zest',
+  email: 'admin_zest@gmail.com',
   photoURL: '/assets/images/avatars/avatar_25.jpg',
-  role: "admin"
+  role: 'admin',
 };
