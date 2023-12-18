@@ -108,7 +108,7 @@ export default function ListProviderBan() {
     const queryParams = {
       // orderBy: 'email:asc',
       // status: 'ACTIVE',
-      // select: 2,
+      select: 50,
       // page: 1,
       // query: 'example@example.com',
     };
@@ -118,6 +118,7 @@ export default function ListProviderBan() {
         params: queryParams,
       })
       .then((response) => {
+        console.log(response)
         setData(response.data.data);
         setLoading(false);
       })
