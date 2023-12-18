@@ -109,7 +109,7 @@ export default function ListProvider() {
     const queryParams = {
       // orderBy: 'email:asc',
       // status: 'ACTIVE',
-      // select: 2,
+      select: 25,
       // page: 1,
       // query: 'example@example.com',
     };
